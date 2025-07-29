@@ -24,8 +24,8 @@ Kiro-RLVR transforms Claude Code into an autonomous development assistant. Simpl
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/kiro-spec-claude
-cd kiro-spec-claude
+git clone [https://github.com/your-org/kiro-spec-claude](https://github.com/asifnawaz/claude-code-rlvr-spec-system)
+mv claude-code-rlvr-spec-system/.claude ./
 
 # That's it! The system is ready to use
 ```
