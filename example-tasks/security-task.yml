@@ -1,0 +1,53 @@
+# Example security task
+
+type: security
+priority: P0  # Critical security issue
+
+tags:
+  - security
+  - authentication
+  - critical
+
+description: |
+  Critical: Fix SQL injection vulnerability in search functionality.
+  
+  Vulnerability details:
+  - User search input is not properly sanitized
+  - Raw SQL queries constructed with string concatenation
+  - Affects endpoints: /api/search, /api/products/search, /api/users/find
+  - Severity: CRITICAL - allows database access
+  
+  Required fixes:
+  1. Replace all raw SQL with parameterized queries
+  2. Implement input validation and sanitization
+  3. Add SQL injection detection middleware
+  4. Update all search-related endpoints
+  5. Add comprehensive security tests
+  
+  Additional security improvements:
+  - Implement rate limiting on search endpoints
+  - Add request size limits
+  - Log suspicious search patterns
+  - Implement IP-based blocking for repeated attempts
+  - Add security headers to all responses
+  
+  Testing requirements:
+  - Test with OWASP SQL injection patterns
+  - Verify parameterized queries in all cases
+  - Test edge cases and special characters
+  - Performance testing with sanitization
+  - Penetration testing suite
+  
+  Documentation:
+  - Update security documentation
+  - Add code examples of secure patterns
+  - Document any API changes
+
+constraints:
+  max_tokens: 75000
+  timeout_ms: 900000  # 15 minutes - security is critical
+  required_checks:
+    - security_scan_pass
+    - sql_injection_tests
+    - penetration_tests
+    - zero_vulnerabilities

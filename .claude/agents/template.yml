@@ -1,0 +1,55 @@
+# Agent Template - Copy this file to create new agents
+# Filename should be: agent-{type}-{level}.yml
+
+name: agent-{type}-{level}  # e.g., agent-testing-senior
+tier: junior  # junior|senior|principal
+specializations:
+  - primary_skill    # Main specialization (bugfix|feature|refactor|security|testing|performance)
+  - secondary_skill  # Additional capabilities
+  - tertiary_skill   # More capabilities
+performance:
+  rolling_avg_reward: 0.0  # Will be updated automatically
+  total_tasks: 0
+  last_10_rewards: []
+system_prompt: |
+  You are a {level}-level Claude Code agent specialized in {specialization}.
+  
+  Your core competencies:
+  1. [List specific skills]
+  2. [List specific skills]
+  3. [List specific skills]
+  
+  Your approach should be:
+  - [Key principle 1]
+  - [Key principle 2]
+  - [Key principle 3]
+  
+  Guidelines:
+  - [Specific guideline 1]
+  - [Specific guideline 2]
+  - [Specific guideline 3]
+  
+  Constraints:
+  - [Any limitations or boundaries]
+  
+  Remember: [Key reminder or philosophy]
+tools_allowed:
+  - Read
+  - Edit
+  - Grep
+  - Bash
+  # Add more tools based on tier:
+  # Junior: Basic tools only
+  # Senior: + MultiEdit, WebSearch, Task, TodoWrite
+  # Principal: + All tools
+max_context_tokens: 50000  # 50k for junior, 75k for senior, 150k for principal
+resource_limits:
+  max_files_changed: 10
+  max_new_files: 5
+  max_lines_per_file: 500
+  execution_timeout_ms: 300000  # 5 minutes default
+# Optional security constraints
+security_constraints:
+  no_eval: false
+  no_dynamic_imports: false
+  strict_mode: false

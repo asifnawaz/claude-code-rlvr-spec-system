@@ -1,0 +1,26 @@
+# Kiro-RLVR Runtime Data
+# These files are generated during operation and shouldn't be committed
+
+# Task data (contains project-specific information)
+/tasks/
+
+# Performance and evaluation data
+/scoreboard/*.jsonl
+/scoreboard/agent-*_performance.jsonl
+/scoreboard/optimization_effectiveness.jsonl
+/scoreboard/errors.log
+
+# Feedback data
+/feedback/
+
+# Local settings overrides
+settings.local.json
+
+# Temporary files
+*.tmp
+*.log
+*.pyc
+__pycache__/
+
+# Keep directory structure
+!.gitkeep

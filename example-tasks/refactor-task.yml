@@ -1,0 +1,52 @@
+# Example refactoring task
+
+type: refactor
+priority: P2
+
+tags:
+  - architecture
+  - performance
+  - database
+
+description: |
+  Refactor database access layer to improve performance and maintainability.
+  
+  Current issues:
+  - Raw SQL queries scattered throughout codebase
+  - No connection pooling
+  - Inconsistent error handling
+  - N+1 query problems in several endpoints
+  - No query result caching
+  
+  Refactoring goals:
+  1. Implement Repository pattern for data access
+  2. Add connection pooling with configurable limits
+  3. Create query builder for type-safe queries
+  4. Implement query result caching layer
+  5. Add database transaction support
+  6. Standardize error handling and logging
+  
+  Specific improvements needed:
+  - UserRepository for all user-related queries
+  - ProductRepository for product data
+  - OrderRepository for order management
+  - Implement batch loading to fix N+1 issues
+  - Add database migration system
+  
+  Performance targets:
+  - Reduce average query time by 40%
+  - Reduce database connections by 60%
+  - Improve API response time by 25%
+  
+  Maintain backward compatibility:
+  - Keep existing API contracts
+  - Gradual migration path
+  - Feature flags for rollout
+
+constraints:
+  max_tokens: 150000
+  timeout_ms: 1800000  # 30 minutes
+  required_checks:
+    - performance_tests
+    - integration_tests
+    - backwards_compatibility

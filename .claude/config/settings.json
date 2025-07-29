@@ -1,0 +1,66 @@
+{
+  "coordinator": {
+    "max_concurrent_agents": 10,
+    "task_timeout_default_ms": 300000,
+    "queue_max_size": 100,
+    "retry_policy": {
+      "max_retries": 3,
+      "backoff_multiplier": 2,
+      "max_backoff_ms": 30000
+    }
+  },
+  "evaluator": {
+    "weights": {
+      "test_coverage_delta": 0.3,
+      "lint_score": 0.2,
+      "security_scan_score": 0.2,
+      "code_complexity_delta": 0.1,
+      "ci_pipeline_status": 0.1,
+      "review_feedback_score": 0.1
+    },
+    "thresholds": {
+      "min_test_coverage": 0.8,
+      "max_complexity_increase": 0.1,
+      "critical_security_fail": 0,
+      "lint_error_tolerance": 5
+    }
+  },
+  "tiers": {
+    "promotion_threshold": 4.0,
+    "demotion_threshold": 2.0,
+    "suspension_threshold": 0.0,
+    "evaluation_window": 10,
+    "grace_period_tasks": 3,
+    "manual_override_enabled": true
+  },
+  "security": {
+    "sandbox_enabled": true,
+    "allowed_hosts": [
+      "api.github.com",
+      "github.com",
+      "raw.githubusercontent.com",
+      "registry.npmjs.org",
+      "pypi.org",
+      "pkg.go.dev"
+    ],
+    "forbidden_commands": [
+      "rm -rf /",
+      "sudo",
+      "eval",
+      "exec"
+    ],
+    "audit_log_enabled": true,
+    "audit_retention_days": 30
+  },
+  "hooks": {
+    "timeout_ms": 30000,
+    "retry_on_failure": true,
+    "log_output": true
+  },
+  "claude_code": {
+    "default_model": "claude-3-opus-20240229",
+    "max_tokens_override": null,
+    "temperature": 0.7,
+    "custom_system_prompt_prefix": "[Kiro-RLVR Agent Context]\n"
+  }
+}

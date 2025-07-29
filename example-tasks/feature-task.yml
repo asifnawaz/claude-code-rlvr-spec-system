@@ -1,0 +1,51 @@
+# Example feature development task
+
+type: feature
+priority: P1
+
+tags:
+  - api
+  - dashboard
+  - analytics
+
+description: |
+  Implement real-time analytics dashboard for user activity.
+  
+  Requirements:
+  1. Create REST API endpoints for analytics data:
+     - GET /api/analytics/users/active (current active users)
+     - GET /api/analytics/users/activity (activity over time)
+     - GET /api/analytics/events/stream (real-time event stream)
+  
+  2. Implement WebSocket support for real-time updates
+  
+  3. Create dashboard UI components:
+     - Active users counter
+     - Activity graph (last 24 hours)
+     - Real-time event feed
+     - User geographic distribution map
+  
+  4. Add caching layer for performance:
+     - Redis for real-time counters
+     - 5-minute cache for aggregated data
+  
+  5. Include comprehensive tests:
+     - API endpoint tests
+     - WebSocket connection tests
+     - UI component tests
+     - Integration tests
+  
+  Technical considerations:
+  - Use existing chart library (Chart.js)
+  - Follow current API patterns
+  - Implement proper error handling
+  - Add loading states for UI
+  - Consider mobile responsiveness
+
+constraints:
+  max_tokens: 100000
+  timeout_ms: 1200000  # 20 minutes
+  required_checks:
+    - api_tests
+    - frontend_tests
+    - integration_tests

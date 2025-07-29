@@ -1,0 +1,963 @@
+openapi: 3.0.3
+info:
+  title: Kiro-RLVR Context Engineering Platform API
+  description: |
+    API specification for the Kiro-RLVR multi-agent orchestration platform with 
+    reinforcement learning and variable rewards for Claude Code.
+  version: 1.0.0
+  contact:
+    name: Kiro-RLVR Team
+    email: team@kiro-rlvr.dev
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development server
+  - url: https://api.kiro-rlvr.dev/v1
+    description: Production server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  /tasks:
+    post:
+      summary: Submit a new task
+      operationId: createTask
+      tags: [Tasks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    
+    get:
+      summary: List all tasks
+      operationId: listTasks
+      tags: [Tasks]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/TaskStatus'
+        - name: agent
+          in: query
+          schema:
+            type: string
+          description: Filter by assigned agent name
+        - name: type
+          in: query
+          schema:
+            $ref: '#/components/schemas/TaskType'
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+
+  /tasks/{taskId}:
+    get:
+      summary: Get task details
+      operationId: getTask
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    patch:
+      summary: Update task status
+      operationId: updateTask
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        '200':
+          description: Task updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+
+  /tasks/{taskId}/reassign:
+    post:
+      summary: Reassign task to different agent
+      operationId: reassignTask
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agent_name:
+                  type: string
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Task reassigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+
+  /agents:
+    get:
+      summary: List all agents
+      operationId: listAgents
+      tags: [Agents]
+      parameters:
+        - name: tier
+          in: query
+          schema:
+            $ref: '#/components/schemas/AgentTier'
+        - name: specialization
+          in: query
+          schema:
+            type: string
+        - name: active
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: List of agents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentList'
+    
+    post:
+      summary: Register new agent
+      operationId: createAgent
+      tags: [Agents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRequest'
+      responses:
+        '201':
+          description: Agent created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+
+  /agents/{agentName}:
+    get:
+      summary: Get agent details
+      operationId: getAgent
+      tags: [Agents]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+      responses:
+        '200':
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+    
+    patch:
+      summary: Update agent configuration
+      operationId: updateAgent
+      tags: [Agents]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentUpdate'
+      responses:
+        '200':
+          description: Agent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+    
+    delete:
+      summary: Remove agent
+      operationId: deleteAgent
+      tags: [Agents]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+      responses:
+        '204':
+          description: Agent deleted
+
+  /agents/{agentName}/metrics:
+    get:
+      summary: Get agent performance metrics
+      operationId: getAgentMetrics
+      tags: [Agents, Metrics]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [24h, 7d, 30d, all]
+            default: 7d
+      responses:
+        '200':
+          description: Agent metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentMetrics'
+
+  /agents/{agentName}/suspend:
+    post:
+      summary: Suspend agent
+      operationId: suspendAgent
+      tags: [Agents]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+                duration:
+                  type: string
+                  format: duration
+                  example: PT24H
+      responses:
+        '200':
+          description: Agent suspended
+
+  /agents/{agentName}/promote:
+    post:
+      summary: Manually promote agent
+      operationId: promoteAgent
+      tags: [Agents]
+      parameters:
+        - $ref: '#/components/parameters/agentName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target_tier:
+                  $ref: '#/components/schemas/AgentTier'
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Agent promoted
+
+  /rewards:
+    get:
+      summary: List reward history
+      operationId: listRewards
+      tags: [Rewards]
+      parameters:
+        - name: agent
+          in: query
+          schema:
+            type: string
+        - name: task_id
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Reward history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardList'
+    
+    post:
+      summary: Submit manual reward
+      operationId: createReward
+      tags: [Rewards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRequest'
+      responses:
+        '201':
+          description: Reward recorded
+
+  /leaderboard:
+    get:
+      summary: Get agent leaderboard
+      operationId: getLeaderboard
+      tags: [Metrics]
+      parameters:
+        - name: metric
+          in: query
+          schema:
+            type: string
+            enum: [reward, tasks, success_rate]
+            default: reward
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [24h, 7d, 30d, all]
+            default: 7d
+      responses:
+        '200':
+          description: Leaderboard data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+
+  /hooks:
+    get:
+      summary: List configured hooks
+      operationId: listHooks
+      tags: [Configuration]
+      responses:
+        '200':
+          description: Hook configurations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HookConfig'
+    
+    post:
+      summary: Register new hook
+      operationId: createHook
+      tags: [Configuration]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HookConfig'
+      responses:
+        '201':
+          description: Hook registered
+
+  /hooks/{hookName}/test:
+    post:
+      summary: Test hook execution
+      operationId: testHook
+      tags: [Configuration]
+      parameters:
+        - name: hookName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_type:
+                  $ref: '#/components/schemas/HookEventType'
+                test_payload:
+                  type: object
+      responses:
+        '200':
+          description: Hook test result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  output:
+                    type: string
+                  duration_ms:
+                    type: number
+
+  /evaluator/config:
+    get:
+      summary: Get evaluator configuration
+      operationId: getEvaluatorConfig
+      tags: [Configuration]
+      responses:
+        '200':
+          description: Evaluator config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluatorConfig'
+    
+    put:
+      summary: Update evaluator configuration
+      operationId: updateEvaluatorConfig
+      tags: [Configuration]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorConfig'
+      responses:
+        '200':
+          description: Config updated
+
+  /system/health:
+    get:
+      summary: Health check
+      operationId: healthCheck
+      tags: [System]
+      security: []
+      responses:
+        '200':
+          description: System healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  components:
+                    type: object
+                    properties:
+                      coordinator:
+                        $ref: '#/components/schemas/ComponentHealth'
+                      evaluator:
+                        $ref: '#/components/schemas/ComponentHealth'
+                      scoreboard:
+                        $ref: '#/components/schemas/ComponentHealth'
+
+  /system/stats:
+    get:
+      summary: Get system statistics
+      operationId: getSystemStats
+      tags: [System]
+      responses:
+        '200':
+          description: System statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uptime_seconds:
+                    type: number
+                  tasks_total:
+                    type: integer
+                  tasks_active:
+                    type: integer
+                  agents_total:
+                    type: integer
+                  agents_active:
+                    type: integer
+                  rewards_today:
+                    type: integer
+                  avg_task_duration_ms:
+                    type: number
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9-]+$'
+    
+    agentName:
+      name: agentName
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^agent-[a-z0-9-]+$'
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+    TaskType:
+      type: string
+      enum: [bugfix, feature, refactor, security]
+
+    TaskStatus:
+      type: string
+      enum: [pending, assigned, in_progress, completed, failed]
+
+    TaskPriority:
+      type: string
+      enum: [P0, P1, P2]
+
+    AgentTier:
+      type: string
+      enum: [junior, senior, principal, suspended]
+
+    HookEventType:
+      type: string
+      enum: [TaskStart, PostToolUse, SubagentStop, TaskComplete]
+
+    TaskRequest:
+      type: object
+      required: [type, description]
+      properties:
+        type:
+          $ref: '#/components/schemas/TaskType'
+        tags:
+          type: array
+          items:
+            type: string
+        priority:
+          $ref: '#/components/schemas/TaskPriority'
+        description:
+          type: string
+        constraints:
+          type: object
+          properties:
+            max_tokens:
+              type: integer
+              default: 100000
+            timeout_ms:
+              type: integer
+              default: 300000
+        metadata:
+          type: object
+
+    TaskResponse:
+      allOf:
+        - $ref: '#/components/schemas/TaskRequest'
+        - type: object
+          required: [id, status, created_at]
+          properties:
+            id:
+              type: string
+            status:
+              $ref: '#/components/schemas/TaskStatus'
+            assigned_agent:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            started_at:
+              type: string
+              format: date-time
+            completed_at:
+              type: string
+              format: date-time
+            outcome:
+              type: object
+              properties:
+                pr_url:
+                  type: string
+                error_message:
+                  type: string
+                tokens_used:
+                  type: integer
+                duration_ms:
+                  type: integer
+                reward:
+                  type: number
+
+    TaskUpdate:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        outcome:
+          type: object
+
+    TaskList:
+      type: object
+      required: [tasks, total, page, limit]
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskResponse'
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    AgentRequest:
+      type: object
+      required: [name, specializations, system_prompt]
+      properties:
+        name:
+          type: string
+          pattern: '^agent-[a-z0-9-]+$'
+        tier:
+          $ref: '#/components/schemas/AgentTier'
+          default: junior
+        specializations:
+          type: array
+          items:
+            type: string
+        system_prompt:
+          type: string
+        tools_allowed:
+          type: array
+          items:
+            type: string
+        max_context_tokens:
+          type: integer
+          default: 50000
+
+    AgentResponse:
+      allOf:
+        - $ref: '#/components/schemas/AgentRequest'
+        - type: object
+          required: [created_at, performance]
+          properties:
+            created_at:
+              type: string
+              format: date-time
+            performance:
+              $ref: '#/components/schemas/AgentPerformance'
+
+    AgentUpdate:
+      type: object
+      properties:
+        tier:
+          $ref: '#/components/schemas/AgentTier'
+        specializations:
+          type: array
+          items:
+            type: string
+        system_prompt:
+          type: string
+        tools_allowed:
+          type: array
+          items:
+            type: string
+        max_context_tokens:
+          type: integer
+
+    AgentPerformance:
+      type: object
+      required: [rolling_avg_reward, total_tasks, success_rate]
+      properties:
+        rolling_avg_reward:
+          type: number
+        total_tasks:
+          type: integer
+        success_rate:
+          type: number
+        last_10_rewards:
+          type: array
+          items:
+            type: number
+        tier_history:
+          type: array
+          items:
+            type: object
+            properties:
+              tier:
+                $ref: '#/components/schemas/AgentTier'
+              timestamp:
+                type: string
+                format: date-time
+              reason:
+                type: string
+
+    AgentList:
+      type: object
+      required: [agents, total]
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentResponse'
+        total:
+          type: integer
+
+    AgentMetrics:
+      type: object
+      properties:
+        agent_name:
+          type: string
+        period:
+          type: string
+        metrics:
+          type: object
+          properties:
+            avg_reward:
+              type: number
+            total_tasks:
+              type: integer
+            success_rate:
+              type: number
+            avg_duration_ms:
+              type: number
+            total_tokens:
+              type: integer
+            reward_trend:
+              type: array
+              items:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  value:
+                    type: number
+
+    RewardRequest:
+      type: object
+      required: [task_id, agent_name, reward]
+      properties:
+        task_id:
+          type: string
+        agent_name:
+          type: string
+        reward:
+          type: number
+          minimum: -5
+          maximum: 5
+        components:
+          type: object
+          properties:
+            test_coverage_delta:
+              type: number
+            lint_score:
+              type: number
+            security_scan_score:
+              type: number
+            code_complexity_delta:
+              type: number
+            ci_pipeline_status:
+              type: number
+            review_feedback_score:
+              type: number
+        manual_override:
+          type: boolean
+          default: false
+        override_reason:
+          type: string
+
+    RewardResponse:
+      allOf:
+        - $ref: '#/components/schemas/RewardRequest'
+        - type: object
+          required: [timestamp, id]
+          properties:
+            id:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+
+    RewardList:
+      type: object
+      required: [rewards, total]
+      properties:
+        rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardResponse'
+        total:
+          type: integer
+
+    Leaderboard:
+      type: object
+      required: [metric, period, entries]
+      properties:
+        metric:
+          type: string
+        period:
+          type: string
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              rank:
+                type: integer
+              agent_name:
+                type: string
+              tier:
+                $ref: '#/components/schemas/AgentTier'
+              value:
+                type: number
+              trend:
+                type: string
+                enum: [up, down, stable]
+
+    HookConfig:
+      type: object
+      required: [name, event_type, script_path]
+      properties:
+        name:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/HookEventType'
+        script_path:
+          type: string
+        timeout_ms:
+          type: integer
+          default: 5000
+        enabled:
+          type: boolean
+          default: true
+        environment:
+          type: object
+          additionalProperties:
+            type: string
+
+    EvaluatorConfig:
+      type: object
+      required: [weights]
+      properties:
+        weights:
+          type: object
+          properties:
+            test_coverage:
+              type: number
+              default: 0.3
+            lint_score:
+              type: number
+              default: 0.2
+            security_scan:
+              type: number
+              default: 0.2
+            complexity:
+              type: number
+              default: 0.1
+            ci_status:
+              type: number
+              default: 0.1
+            review_feedback:
+              type: number
+              default: 0.1
+        thresholds:
+          type: object
+          properties:
+            min_test_coverage:
+              type: number
+              default: 0.8
+            max_complexity_increase:
+              type: number
+              default: 0.1
+
+    ComponentHealth:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        last_check:
+          type: string
+          format: date-time
+        message:
+          type: string

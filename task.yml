@@ -1,0 +1,39 @@
+# Example task file for Kiro-RLVR
+# Place this in your project root and Claude Code will route it to the best agent
+
+type: bugfix  # bugfix | feature | refactor | security | testing | performance
+priority: P1  # P0 (critical) | P1 (high) | P2 (medium) | P3 (low)
+
+tags:
+  - authentication
+  - security
+  - backend
+
+description: |
+  Fix authentication bypass vulnerability in the login endpoint.
+  
+  Issue Details:
+  - Users can bypass 2FA by manipulating the session cookie
+  - The session validation is not properly checking token expiry
+  - No rate limiting on failed login attempts
+  
+  Requirements:
+  1. Validate session integrity on each request
+  2. Implement proper token expiry checks
+  3. Add rate limiting for failed attempts
+  4. Add comprehensive tests for all auth scenarios
+  5. Update security documentation
+  
+  Affected files (likely):
+  - src/auth/middleware.js
+  - src/auth/session.js
+  - src/routes/login.js
+  - tests/auth/
+
+constraints:
+  max_tokens: 75000
+  timeout_ms: 600000  # 10 minutes
+  required_checks:
+    - security_scan
+    - auth_tests
+    - coverage_80_percent
