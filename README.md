@@ -1,4 +1,4 @@
-# Kiro-RLVR: Autonomous Agent System for Claude Code
+# RLVR: Autonomous Agent System for Claude Code
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code Compatible](https://img.shields.io/badge/Claude%20Code-Compatible-blue)](https://claude.ai/code)
