@@ -65,11 +65,21 @@ def manual_assign():
             sys.exit(1)
     else:
         # Auto-select agent
-        from .doom_cli import load_agents, select_best_agent
+        # Load agents from .md files
         agents = []
-        for agent_file in AGENTS_DIR.glob("agent-*.yml"):
-            with open(agent_file) as f:
-                agents.append(yaml.safe_load(f))
+        for agent_file in AGENTS_DIR.glob("agent-*.md"):
+            try:
+                with open(agent_file) as f:
+                    content = f.read()
+                # Extract YAML front matter
+                if content.startswith('---'):
+                    yaml_end = content.find('---', 3)
+                    if yaml_end > 0:
+                        yaml_content = content[3:yaml_end].strip()
+                        agent_data = yaml.safe_load(yaml_content)
+                        agents.append(agent_data)
+            except Exception as e:
+                print(f"Warning: Could not load agent {agent_file}: {e}", file=sys.stderr)
         
         if not agents:
             print("Error: No agents available", file=sys.stderr)
