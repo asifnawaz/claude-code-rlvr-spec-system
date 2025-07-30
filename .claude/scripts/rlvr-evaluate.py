@@ -24,14 +24,14 @@ class RLVREvaluator:
                 "code_complexity_delta": 0.10,
                 "ci_pipeline_status": 0.10,
                 "review_feedback_score": 0.10,
-                "kiro_template_score": 0.15
+                "doom_template_score": 0.15
             },
             "thresholds": {
                 "min_test_coverage": 0.8,
                 "max_complexity_increase": 0.1,
                 "critical_security_fail": 0,
                 "lint_error_tolerance": 5,
-                "min_kiro_score": 7.0
+                "min_doom_score": 7.0
             }
         }
         
@@ -55,7 +55,7 @@ class RLVREvaluator:
             'code_complexity_delta': self._evaluate_complexity(),
             'ci_pipeline_status': self._evaluate_ci_status(),
             'review_feedback_score': self._evaluate_review_feedback(),
-            'kiro_template_score': self._evaluate_kiro_template(task_id)
+            'doom_template_score': self._evaluate_doom_template(task_id)
         }
         
         # Calculate weighted reward
@@ -338,7 +338,7 @@ class RLVREvaluator:
         # For now, check if there's a review feedback file
         try:
             project_root = Path(os.environ.get('CLAUDE_PROJECT_DIR', '.'))
-            feedback_file = project_root / 'data' / 'tasks' / os.environ.get('KIRO_TASK_ID', 'unknown') / 'review.json'
+            feedback_file = project_root / 'data' / 'tasks' / os.environ.get('DOOM_TASK_ID', 'unknown') / 'review.json'
             if feedback_file.exists():
                 with open(feedback_file) as f:
                     review = json.load(f)
@@ -349,8 +349,8 @@ class RLVREvaluator:
         # No review data available
         return 0.0
     
-    def _evaluate_kiro_template(self, task_id: str) -> float:
-        """Evaluate Kiro template compliance (-1 to +1)"""
+    def _evaluate_doom_template(self, task_id: str) -> float:
+        """Evaluate Doom template compliance (-1 to +1)"""
         try:
             # Get the task metadata to check prompt structure
             project_root = Path(os.environ.get('CLAUDE_PROJECT_DIR', '.'))
@@ -370,14 +370,14 @@ class RLVREvaluator:
             project_root = Path(os.environ.get('CLAUDE_PROJECT_DIR', '.'))
             sys.path.insert(0, str(project_root / ".claude" / "hooks"))
             try:
-                from validate_prompt_structure import KiroPromptValidator
-                validator = KiroPromptValidator()
+                from validate_prompt_structure import DoomPromptValidator
+                validator = DoomPromptValidator()
                 
                 # Validate the prompt
                 is_valid, results = validator.validate(prompt)
                 
                 # Get the score (0-10)
-                kiro_score = results.get('score', 0)
+                doom_score = results.get('score', 0)
                 
                 # Check acceptance criteria completion
                 if '$ACCEPTANCE_CRITERIA' in prompt:
@@ -387,29 +387,29 @@ class RLVREvaluator:
                     if total_items > 0:
                         completion_rate = checked / total_items
                         # Bonus for completing acceptance criteria
-                        kiro_score += completion_rate * 2
+                        doom_score += completion_rate * 2
                 
                 # Normalize to -1 to +1
                 # Score 10+ = 1.0, Score 7 = 0.5, Score 5 = 0, Score < 3 = negative
-                if kiro_score >= 10:
+                if doom_score >= 10:
                     return 1.0
-                elif kiro_score >= 7:
-                    return (kiro_score - 7) / 3 * 0.5 + 0.5
-                elif kiro_score >= 5:
-                    return (kiro_score - 5) / 2 * 0.5
+                elif doom_score >= 7:
+                    return (doom_score - 7) / 3 * 0.5 + 0.5
+                elif doom_score >= 5:
+                    return (doom_score - 5) / 2 * 0.5
                 else:
-                    return (kiro_score - 5) / 5
+                    return (doom_score - 5) / 5
                     
             except Exception as e:
                 print(f"Error loading validator: {e}")
-                # Fallback: check for basic Kiro fields
+                # Fallback: check for basic Doom fields
                 required_fields = ['$GOAL:', '$CONTEXT:', '$INPUT:', '$CONSTRAINTS:', 
                                  '$OUTPUT_EXPECTED:', '$ACCEPTANCE_CRITERIA:', '$DEADLINE:']
                 found = sum(1 for field in required_fields if field in prompt)
                 return (found / len(required_fields)) * 2 - 1
                 
         except Exception as e:
-            print(f"Error evaluating Kiro template: {e}")
+            print(f"Error evaluating Doom template: {e}")
             return 0.0
     
     def _calculate_reward(self, components: Dict[str, float], task_status: str) -> float:

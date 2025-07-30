@@ -1,9 +1,0 @@
-{
-  "agents_dir": "kiro/agents",
-  "scripts_dir": "kiro/scripts",
-  "config_dir": "kiro/config",
-  "prompts_dir": "kiro/prompts",
-  "tasks_dir": "data/tasks",
-  "scoreboard_dir": "data/scoreboard",
-  "feedback_dir": "data/feedback"
-}

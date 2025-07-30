@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Manual task assignment script for Kiro-RLVR
+Manual task assignment script for Doom-RLVR
 Allows overriding automatic agent selection
 """
 
@@ -30,8 +30,8 @@ def manual_assign():
         task_data = yaml.safe_load(f)
     
     # Get manual assignment parameters
-    agent_name = os.environ.get('KIRO_MANUAL_AGENT', '')
-    force = os.environ.get('KIRO_FORCE_ASSIGNMENT', 'false').lower() == 'true'
+    agent_name = os.environ.get('DOOM_MANUAL_AGENT', '')
+    force = os.environ.get('DOOM_FORCE_ASSIGNMENT', 'false').lower() == 'true'
     
     if agent_name:
         # Verify agent exists
@@ -65,7 +65,7 @@ def manual_assign():
             sys.exit(1)
     else:
         # Auto-select agent
-        from .kiro_cli import load_agents, select_best_agent
+        from .doom_cli import load_agents, select_best_agent
         agents = []
         for agent_file in AGENTS_DIR.glob("agent-*.yml"):
             with open(agent_file) as f:
@@ -100,11 +100,11 @@ def manual_assign():
     task_dir.mkdir(parents=True, exist_ok=True)
     
     # Create context
-    context = f"""[Kiro-RLVR Task Assignment]
+    context = f"""[Doom-RLVR Task Assignment]
 
 Task ID: {task_id}
 Assigned Agent: {agent_name} ({agent_data['tier']} tier)
-Assignment Method: {'Manual (forced)' if force else 'Manual' if os.environ.get('KIRO_MANUAL_AGENT') else 'Automatic'}
+Assignment Method: {'Manual (forced)' if force else 'Manual' if os.environ.get('DOOM_MANUAL_AGENT') else 'Automatic'}
 
 {agent_data.get('system_prompt', '')}
 
@@ -131,7 +131,7 @@ Constraints:
         'agent_tier': agent_data['tier'],
         'created_at': datetime.utcnow().isoformat(),
         'status': 'assigned',
-        'assignment_method': 'manual' if os.environ.get('KIRO_MANUAL_AGENT') else 'automatic',
+        'assignment_method': 'manual' if os.environ.get('DOOM_MANUAL_AGENT') else 'automatic',
         'forced': force
     }
     
@@ -146,17 +146,17 @@ Constraints:
         'task_type': task_data.get('type', 'general'),
         'agent_name': agent_name,
         'agent_tier': agent_data['tier'],
-        'method': 'manual' if os.environ.get('KIRO_MANUAL_AGENT') else 'automatic'
+        'method': 'manual' if os.environ.get('DOOM_MANUAL_AGENT') else 'automatic'
     }
     
     with open(SCOREBOARD_DIR / "events.jsonl", 'a') as f:
         f.write(json.dumps(log_entry) + '\n')
     
     # Set environment for hooks
-    print(f"export KIRO_TASK_ID='{task_id}'")
-    print(f"export KIRO_AGENT_NAME='{agent_name}'")
-    print(f"export KIRO_AGENT_TIER='{agent_data['tier']}'")
-    print(f"export KIRO_CONTEXT_FILE='{task_dir / 'context.md'}'")
+    print(f"export DOOM_TASK_ID='{task_id}'")
+    print(f"export DOOM_AGENT_NAME='{agent_name}'")
+    print(f"export DOOM_AGENT_TIER='{agent_data['tier']}'")
+    print(f"export DOOM_CONTEXT_FILE='{task_dir / 'context.md'}'")
     
     print(f"\nTask {task_id} assigned to {agent_name} ({agent_data['tier']} tier)")
     print(f"Context saved to: {task_dir / 'context.md'}")

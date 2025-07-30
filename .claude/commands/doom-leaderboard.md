@@ -5,11 +5,11 @@ allowed-tools: Read, Bash(python3:*)
 
 ## Context
 
-Show performance rankings for all Kiro-RLVR agents.
+Show performance rankings for all Doom-RLVR agents.
 
 ## Task
 
-!`python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/kiro_cli_simple.py" leaderboard`
+!`python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/doom-cli-simple.py" leaderboard`
 
 Display the agent leaderboard showing:
 - Agent names and tiers

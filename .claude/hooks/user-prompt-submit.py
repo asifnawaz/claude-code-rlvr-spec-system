@@ -20,7 +20,7 @@ project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
 
 # Import path configuration
 sys.path.insert(0, str(Path(__file__).parent))
-from kiro_paths import get_paths, get_agents_dir, get_tasks_dir, get_scoreboard_dir, get_prompts_dir
+from doom_paths import get_paths, get_agents_dir, get_tasks_dir, get_scoreboard_dir, get_prompts_dir
 
 # Get configured paths
 paths = get_paths()
@@ -33,7 +33,7 @@ PROMPTS_DIR = get_prompts_dir()
 original_prompt = hook_data.get('userPrompt', '')
 
 # Skip if no prompt or if already processed
-if not original_prompt or '[Kiro-RLVR Agent Assignment]' in original_prompt:
+if not original_prompt or '[Doom-RLVR Agent Assignment]' in original_prompt:
     sys.exit(0)
 
 def detect_task_type(prompt):
@@ -75,15 +75,15 @@ def detect_priority(prompt):
     return 'P2'
 
 def optimize_prompt(prompt, task_type):
-    """Optimize and enhance the user prompt with Kiro template"""
+    """Optimize and enhance the user prompt with Doom template"""
     
     # Import the validator
     sys.path.insert(0, str(paths['hooks_dir']))
     try:
-        from validate_prompt_structure import KiroPromptValidator
-        validator = KiroPromptValidator()
+        from validate_prompt_structure import DoomPromptValidator
+        validator = DoomPromptValidator()
         
-        # Check if prompt already follows Kiro format
+        # Check if prompt already follows Doom format
         is_valid, results = validator.validate(prompt)
         if is_valid and results['score'] >= 8:
             # Already well-structured
@@ -92,9 +92,9 @@ def optimize_prompt(prompt, task_type):
         # Fallback if validator not available
         pass
     
-    # Create Kiro-compliant prompt based on task type
-    kiro_templates = {
-        'bugfix': """# Kiro Prompt
+    # Create Doom-compliant prompt based on task type
+    doom_templates = {
+        'bugfix': """# Doom Prompt
 $GOAL: Fix the reported bug
 $CONTEXT: {prompt}
 $INPUT: Error logs, affected code files, reproduction steps
@@ -108,7 +108,7 @@ $ACCEPTANCE_CRITERIA:
   - [ ] Code changes are minimal
 $DEADLINE: ASAP for production bugs""",
         
-        'feature': """# Kiro Prompt
+        'feature': """# Doom Prompt
 $GOAL: Implement new feature
 $CONTEXT: {prompt}
 $INPUT: Requirements, design specs, API contracts
@@ -123,7 +123,7 @@ $ACCEPTANCE_CRITERIA:
   - [ ] Performance benchmarks met
 $DEADLINE: Based on sprint planning""",
         
-        'refactor': """# Kiro Prompt
+        'refactor': """# Doom Prompt
 $GOAL: Refactor code for improved quality
 $CONTEXT: {prompt}
 $INPUT: Current codebase, performance metrics, code analysis
@@ -137,7 +137,7 @@ $ACCEPTANCE_CRITERIA:
   - [ ] No breaking changes
 $DEADLINE: Low priority unless blocking""",
         
-        'security': """# Kiro Prompt
+        'security': """# Doom Prompt
 $GOAL: Address security vulnerability
 $CONTEXT: {prompt}
 $INPUT: Security scan results, vulnerability reports, OWASP guidelines
@@ -151,7 +151,7 @@ $ACCEPTANCE_CRITERIA:
   - [ ] Security documentation updated
 $DEADLINE: Critical - immediate attention""",
         
-        'testing': """# Kiro Prompt
+        'testing': """# Doom Prompt
 $GOAL: Improve test coverage
 $CONTEXT: {prompt}
 $INPUT: Current test suite, coverage reports, code to test
@@ -165,7 +165,7 @@ $ACCEPTANCE_CRITERIA:
   - [ ] Coverage target met
 $DEADLINE: Before feature release""",
         
-        'performance': """# Kiro Prompt
+        'performance': """# Doom Prompt
 $GOAL: Optimize performance
 $CONTEXT: {prompt}
 $INPUT: Performance profiles, bottleneck analysis, benchmarks
@@ -180,7 +180,7 @@ $ACCEPTANCE_CRITERIA:
 $DEADLINE: Based on user impact"""
     }
     
-    template = kiro_templates.get(task_type, """# Kiro Prompt
+    template = doom_templates.get(task_type, """# Doom Prompt
 $GOAL: Complete the requested task
 $CONTEXT: {prompt}
 $INPUT: Relevant files and documentation
@@ -333,7 +333,7 @@ if agent_prompt_file.exists():
                 agent_prompt += line[2:] if line.startswith('  ') else line
 
 # Create comprehensive agent context
-agent_context = f"""[Kiro-RLVR Agent Assignment]
+agent_context = f"""[Doom-RLVR Agent Assignment]
 
 You are now operating as: {selected_agent['name']} ({selected_agent.get('tier', 'junior')} tier)
 Task ID: {task_id}

@@ -11,7 +11,7 @@ from pathlib import Path
 
 # Import path configuration
 sys.path.insert(0, str(Path(__file__).parent))
-from kiro_paths import get_scoreboard_dir, get_tasks_dir
+from doom_paths import get_scoreboard_dir, get_tasks_dir
 
 SCOREBOARD_DIR = get_scoreboard_dir()
 TASKS_DIR = get_tasks_dir()
@@ -48,8 +48,8 @@ def check_command_safety(command):
 
 def record_tool_usage(tool_data):
     """Record tool usage metrics"""
-    task_id = os.environ.get('KIRO_TASK_ID', 'unknown')
-    agent_name = os.environ.get('KIRO_AGENT_NAME', 'unknown')
+    task_id = os.environ.get('DOOM_TASK_ID', 'unknown')
+    agent_name = os.environ.get('DOOM_AGENT_NAME', 'unknown')
     
     # Create metrics entry
     metrics = {
@@ -81,7 +81,7 @@ def enforce_resource_limits(tool_data):
     # Check token usage for LLM tools
     if tool_name in ['Generate', 'Edit', 'Refactor']:
         tokens_used = tool_data.get('metadata', {}).get('tokens_used', 0)
-        max_tokens = int(os.environ.get('KIRO_MAX_TOKENS', '100000'))
+        max_tokens = int(os.environ.get('DOOM_MAX_TOKENS', '100000'))
         
         if tokens_used > max_tokens:
             return False, f"Token limit exceeded: {tokens_used} > {max_tokens}"
@@ -133,7 +133,7 @@ def main():
         print(f"WARNING: Edit tool failed - agent may need to re-read the file")
     
     # Success case - tool usage is allowed
-    task_id = os.environ.get('KIRO_TASK_ID', 'unknown')
+    task_id = os.environ.get('DOOM_TASK_ID', 'unknown')
     print(f"Tool {tool_name} executed successfully for task {task_id}")
 
 if __name__ == "__main__":

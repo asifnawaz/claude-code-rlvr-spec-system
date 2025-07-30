@@ -6,7 +6,7 @@ allowed-tools: Read, Write, Bash(date:*, jq:*)
 
 ## Context
 
-Starting a new sprint for Kiro-RLVR tracked development.
+Starting a new sprint for Doom-RLVR tracked development.
 
 ## Task
 
@@ -38,7 +38,7 @@ EOF`
 
 Based on RLVR metrics, prioritize:
 
-!`python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/kiro_cli_simple.py" analyze-backlog 2>/dev/null || echo "No backlog analysis available"`
+!`python3 "${CLAUDE_PROJECT_DIR}/.claude/scripts/doom-cli-simple.py" analyze-backlog 2>/dev/null || echo "No backlog analysis available"`
 
 Top agents for this sprint:
 !`tail -20 "${CLAUDE_PROJECT_DIR}/data/scoreboard/rlvr.jsonl" 2>/dev/null | jq -r '.agent_name' | sort | uniq -c | sort -nr | head -5 || echo "No agent metrics yet"`

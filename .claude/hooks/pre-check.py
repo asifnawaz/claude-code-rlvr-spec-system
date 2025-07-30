@@ -22,8 +22,8 @@ tool_args = hook_data.get('args', {})
 
 # Get project and task context
 project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
-task_id = os.environ.get('KIRO_TASK_ID', '')
-agent_name = os.environ.get('KIRO_AGENT', '')
+task_id = os.environ.get('DOOM_TASK_ID', '')
+agent_name = os.environ.get('DOOM_AGENT', '')
 
 class ToolValidator:
     """Validates tool calls based on security and compliance rules"""
