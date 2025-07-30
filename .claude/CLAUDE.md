@@ -4,10 +4,12 @@
 
 Kiro-RLVR is an autonomous agent handling system that automatically:
 - Detects task types from natural language prompts
-- Optimizes prompts for better results
-- Routes tasks to specialized agents
-- Evaluates performance using RLVR (Reinforcement Learning with Variable Rewards)
-- Improves continuously through feedback
+- Structures prompts using the Kiro template ($GOAL, $CONTEXT, etc.)
+- Routes tasks to specialized agents (defined as .md files)
+- Validates tool usage with security checks (pre-check.py)
+- Evaluates performance using RLVR including template compliance
+- Tracks sprint progress and team velocity
+- Improves continuously through reinforcement learning
 
 ## How to Use
 
@@ -23,11 +25,18 @@ Just type your request naturally. The system handles everything else:
 
 ## Available Commands
 
+### Task Management
 - `/kiro-status` - View recent tasks and their status
-- `/kiro-leaderboard` - See agent performance rankings
-- `/kiro-agent <name>` - View specific agent details
-- `/kiro-expand` - Expand a task into subtasks
-- `/kiro-report` - Generate task report
+- `/kiro-leaderboard` - See agent performance rankings with RLVR scores
+- `/kiro-agent <name>` - View specific agent details from .md files
+- `/kiro-report` - Generate comprehensive task report
+
+### Sprint Management (NEW)
+- `/start-sprint "Name" [days]` - Start a new sprint with RLVR tracking
+- `/burndown` - View sprint progress, velocity, and task burndown
+- `/end-sprint` - Complete sprint and generate metrics report
+
+Note: These are custom slash commands defined as markdown files in `.claude/commands/`
 
 ## Task Types
 
@@ -41,13 +50,17 @@ The system automatically detects:
 
 ## Agents
 
-Current specialized agents:
+Current specialized agents (defined as .md files with YAML front-matter):
 - `agent-bugfix-junior` - Entry-level bug fixing
 - `agent-bugfix-senior` - Advanced bug fixing
 - `agent-feature-junior` - Basic feature development
 - `agent-feature-senior` - Complex feature development
 - `agent-refactor-principal` - Architecture and refactoring
 - `agent-security-senior` - Security specialist
+
+Each agent has:
+- YAML configuration in front-matter (tier, specializations, tools_allowed)
+- Markdown body with instructions and Kiro template guidance
 
 ## Priority Levels
 
@@ -60,12 +73,18 @@ Automatically detected from keywords:
 ## RLVR Evaluation Metrics
 
 Tasks are evaluated on:
-1. **Test Coverage** (30%): Must increase or maintain
-2. **Code Quality** (20%): Lint checks must pass
-3. **Security** (20%): No new vulnerabilities
+1. **Test Coverage** (25%): Must increase or maintain
+2. **Code Quality** (15%): Lint checks must pass
+3. **Security** (15%): No new vulnerabilities
 4. **Complexity** (10%): Should not increase significantly
 5. **CI/CD** (10%): All pipelines must pass
 6. **Review Quality** (10%): Clean, reviewable code
+7. **Kiro Template Compliance** (15%): Proper use of $GOAL, $CONTEXT, etc.
+
+The Kiro template score includes:
+- Presence of all required fields (-2 points per missing)
+- Completion of acceptance criteria (+1 per checked item)
+- Overall structure and clarity
 
 ## Manual Task Creation (Optional)
 

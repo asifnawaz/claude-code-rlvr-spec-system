@@ -47,7 +47,7 @@
 **Solutions:**
 - Check Stop hook is executable: `ls -la .claude/hooks/Stop`
 - Verify task metadata exists: `ls .claude/tasks/`
-- Check RLVR evaluator: `python3 .claude/scripts/rlvr_evaluate.py --help`
+- Check RLVR evaluator: `python3 .claude/scripts/rlvr-evaluate.py --help`
 - Look for errors: `tail .claude/scoreboard/errors.log`
 
 ### 5. Agent performance not updating
@@ -155,7 +155,7 @@ find .claude/tasks -name metadata.json -exec cat {} \;
 echo '{"userPrompt":"fix the bug"}' | python3 .claude/hooks/UserPromptSubmit
 
 # Test evaluation
-python3 .claude/scripts/rlvr_evaluate.py test-task agent-test completed
+python3 .claude/scripts/rlvr-evaluate.py test-task agent-test completed
 ```
 
 ## Getting Help

@@ -25,15 +25,19 @@ Check that all components are in place:
 ```bash
 # Check hooks
 ls .claude/hooks/
-# Should show: UserPromptSubmit, PreToolUse, PostToolUse, Stop
+# Should show: UserPromptSubmit, PreToolUse, PostToolUse, Stop, validate-prompt-structure.py, pre-check.py
 
-# Check agents
+# Check agents (now markdown files)
 ls .claude/agents/
-# Should show: agent-bugfix-junior.yml, agent-bugfix-senior.yml, etc.
+# Should show: agent-bugfix-junior.md, agent-bugfix-senior.md, etc.
 
 # Check scripts
 ls .claude/scripts/
-# Should show: kiro_cli_simple.py, rlvr_evaluate.py, etc.
+# Should show: kiro-cli-simple.py, rlvr-evaluate.py, etc.
+
+# Check commands
+ls .claude/commands/
+# Should show: kiro-status.md, start-sprint.md, end-sprint.md, burndown.md, etc.
 ```
 
 ### 3. Initialize Claude Code Settings
@@ -64,10 +68,11 @@ Just type your request naturally:
 The system will automatically:
 1. Detect the task type (bugfix/feature/performance)
 2. Determine priority
-3. Optimize your prompt
-4. Select the best agent
-5. Execute with proper constraints
-6. Evaluate results
+3. Generate a Kiro-compliant prompt with $GOAL, $CONTEXT, etc.
+4. Select the best agent from markdown profiles
+5. Validate tool usage with security checks
+6. Execute with proper constraints
+7. Evaluate results including template compliance (15% of score)
 
 ### Manual Task Creation (Optional)
 
@@ -85,17 +90,19 @@ requirements:
 EOF
 ```
 
-### Check Status
+### Available Commands
 
 ```bash
-# View recent tasks
-/kiro-status
+# Task Management
+/kiro-status          # View recent tasks
+/kiro-leaderboard     # View agent performance with RLVR scores
+/kiro-agent <name>    # View specific agent details
+/kiro-report          # Generate comprehensive task report
 
-# View agent performance
-/kiro-leaderboard
-
-# View specific agent details
-/kiro-agent agent-bugfix-senior
+# Sprint Management
+/start-sprint "Sprint Name" [days]  # Start a new sprint
+/burndown             # View sprint progress and velocity
+/end-sprint           # Complete sprint with metrics
 ```
 
 ## 📁 Directory Structure
@@ -103,26 +110,56 @@ EOF
 ```
 .claude/
 ├── hooks/
-│   ├── UserPromptSubmit    # Autonomous task detection & routing
-│   ├── PreToolUse          # Tool permission enforcement
-│   ├── PostToolUse         # Tool usage tracking
-│   └── Stop                # Task evaluation & feedback
-├── agents/
-│   ├── agent-bugfix-junior.yml
-│   ├── agent-bugfix-senior.yml
-│   ├── agent-feature-junior.yml
-│   ├── agent-feature-senior.yml
-│   ├── agent-refactor-principal.yml
-│   └── agent-security-senior.yml
+│   ├── UserPromptSubmit             # Autonomous task detection & Kiro template generation
+│   ├── PreToolUse                   # Tool permission enforcement
+│   ├── PostToolUse                  # Tool usage tracking
+│   ├── Stop                         # Task evaluation & feedback
+│   ├── validate-prompt-structure.py # Kiro template validator
+│   └── pre-check.py                 # Security validation hook
+├── agents/                          # Markdown files with YAML front-matter
+│   ├── agent-bugfix-junior.md
+│   ├── agent-bugfix-senior.md
+│   ├── agent-feature-junior.md
+│   ├── agent-feature-senior.md
+│   ├── agent-refactor-principal.md
+│   └── agent-security-senior.md
+├── commands/                        # Sprint and task management commands
+│   ├── kiro-status.md
+│   ├── kiro-leaderboard.md
+│   ├── start-sprint.md
+│   ├── end-sprint.md
+│   └── burndown.md
 ├── scripts/
-│   ├── kiro_cli_simple.py  # Main CLI tool
-│   └── rlvr_evaluate.py    # Evaluation engine
+│   ├── kiro-cli-simple.py          # Main CLI tool
+│   └── rlvr-evaluate.py            # Evaluation engine with template scoring
 ├── prompts/
-│   └── optimization-templates.json
-├── tasks/                  # Task metadata storage
-├── scoreboard/            # Performance metrics
-└── feedback/              # Improvement suggestions
+│   └── optimization-templates.json  # Kiro template patterns
+├── tasks/                           # Task metadata storage
+├── scoreboard/                      # Performance metrics & RLVR scores
+├── feedback/                        # Improvement suggestions
+└── sprints/                         # Sprint tracking data
 ```
+
+## 📋 Kiro Prompt Template
+
+All tasks are automatically structured using the Kiro template format:
+
+```
+# Kiro Prompt
+$GOAL: <single objective sentence>
+$CONTEXT: <brief background>
+$INPUT: <relevant artifacts / code refs>
+$CONSTRAINTS: <edge cases, security limits>
+$OUTPUT_EXPECTED: <deliverable definition>
+$ACCEPTANCE_CRITERIA: <checklist>
+$DEADLINE: <ISO 8601>
+```
+
+Benefits:
+- Ensures consistent task structure
+- RLVR evaluator gives bonus points for compliance
+- Tracks acceptance criteria completion
+- Provides clear expectations to agents
 
 ## 🔧 Configuration
 

@@ -17,11 +17,17 @@ except:
     sys.exit(0)
 
 project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
-CLAUDE_DIR = Path(project_dir) / ".claude"
-AGENTS_DIR = CLAUDE_DIR / "agents"
-TASKS_DIR = CLAUDE_DIR / "tasks"
-SCOREBOARD_DIR = CLAUDE_DIR / "scoreboard"
-PROMPTS_DIR = CLAUDE_DIR / "prompts"
+
+# Import path configuration
+sys.path.insert(0, str(Path(__file__).parent))
+from kiro_paths import get_paths, get_agents_dir, get_tasks_dir, get_scoreboard_dir, get_prompts_dir
+
+# Get configured paths
+paths = get_paths()
+AGENTS_DIR = get_agents_dir()
+TASKS_DIR = get_tasks_dir()
+SCOREBOARD_DIR = get_scoreboard_dir()
+PROMPTS_DIR = get_prompts_dir()
 
 # Get original user prompt
 original_prompt = hook_data.get('userPrompt', '')
@@ -69,110 +75,190 @@ def detect_priority(prompt):
     return 'P2'
 
 def optimize_prompt(prompt, task_type):
-    """Optimize and enhance the user prompt"""
+    """Optimize and enhance the user prompt with Kiro template"""
     
-    # Load optimization templates
-    optimization_templates = {
-        'bugfix': """
-Please provide the following details:
-1. What is the expected behavior?
-2. What is the actual behavior?
-3. Steps to reproduce
-4. Any error messages?
-5. Affected files/components (if known)
-
-Original request: {prompt}
-""",
-        'feature': """
-Please consider:
-1. User stories and use cases
-2. Technical requirements
-3. API design (if applicable)
-4. UI/UX considerations
-5. Testing approach
-6. Documentation needs
-
-Original request: {prompt}
-""",
-        'refactor': """
-Please focus on:
-1. Current code structure analysis
-2. Identify code smells and issues
-3. Propose improved architecture
-4. Ensure backward compatibility
-5. Update tests accordingly
-
-Original request: {prompt}
-""",
-        'security': """
-SECURITY TASK - Please prioritize:
-1. Identify vulnerability type and severity
-2. Assess potential impact
-3. Implement secure fix
-4. Add security tests
-5. Update security documentation
-
-Original request: {prompt}
-""",
-        'testing': """
-Testing focus:
-1. Identify what needs testing
-2. Choose appropriate test types (unit/integration/e2e)
-3. Aim for high coverage
-4. Test edge cases
-5. Ensure tests are maintainable
-
-Original request: {prompt}
-""",
-        'performance': """
-Performance optimization approach:
-1. Profile and identify bottlenecks
-2. Measure baseline performance
-3. Implement optimizations
-4. Verify improvements
-5. Document changes
-
-Original request: {prompt}
-"""
+    # Import the validator
+    sys.path.insert(0, str(paths['hooks_dir']))
+    try:
+        from validate_prompt_structure import KiroPromptValidator
+        validator = KiroPromptValidator()
+        
+        # Check if prompt already follows Kiro format
+        is_valid, results = validator.validate(prompt)
+        if is_valid and results['score'] >= 8:
+            # Already well-structured
+            return prompt
+    except:
+        # Fallback if validator not available
+        pass
+    
+    # Create Kiro-compliant prompt based on task type
+    kiro_templates = {
+        'bugfix': """# Kiro Prompt
+$GOAL: Fix the reported bug
+$CONTEXT: {prompt}
+$INPUT: Error logs, affected code files, reproduction steps
+$CONSTRAINTS: Maintain backward compatibility, minimize changes outside bug scope
+$OUTPUT_EXPECTED: Fixed code with regression tests
+$ACCEPTANCE_CRITERIA:
+  - [ ] Bug is reproducible before fix
+  - [ ] Bug is resolved after fix
+  - [ ] All existing tests pass
+  - [ ] New regression test added
+  - [ ] Code changes are minimal
+$DEADLINE: ASAP for production bugs""",
+        
+        'feature': """# Kiro Prompt
+$GOAL: Implement new feature
+$CONTEXT: {prompt}
+$INPUT: Requirements, design specs, API contracts
+$CONSTRAINTS: Follow existing patterns, maintain performance, ensure security
+$OUTPUT_EXPECTED: Feature implementation with tests and documentation
+$ACCEPTANCE_CRITERIA:
+  - [ ] Feature works as specified
+  - [ ] Unit tests cover new code
+  - [ ] Integration tests pass
+  - [ ] API documented
+  - [ ] UI/UX follows design
+  - [ ] Performance benchmarks met
+$DEADLINE: Based on sprint planning""",
+        
+        'refactor': """# Kiro Prompt
+$GOAL: Refactor code for improved quality
+$CONTEXT: {prompt}
+$INPUT: Current codebase, performance metrics, code analysis
+$CONSTRAINTS: No breaking changes, maintain API contracts, preserve functionality
+$OUTPUT_EXPECTED: Refactored code with same functionality but better structure
+$ACCEPTANCE_CRITERIA:
+  - [ ] All tests pass before and after
+  - [ ] Code complexity reduced
+  - [ ] Performance maintained or improved
+  - [ ] Documentation updated
+  - [ ] No breaking changes
+$DEADLINE: Low priority unless blocking""",
+        
+        'security': """# Kiro Prompt
+$GOAL: Address security vulnerability
+$CONTEXT: {prompt}
+$INPUT: Security scan results, vulnerability reports, OWASP guidelines
+$CONSTRAINTS: No data loss, maintain user experience, comply with standards
+$OUTPUT_EXPECTED: Secure implementation with security tests
+$ACCEPTANCE_CRITERIA:
+  - [ ] Vulnerability fixed
+  - [ ] Security tests added
+  - [ ] No new vulnerabilities introduced
+  - [ ] OWASP guidelines followed
+  - [ ] Security documentation updated
+$DEADLINE: Critical - immediate attention""",
+        
+        'testing': """# Kiro Prompt
+$GOAL: Improve test coverage
+$CONTEXT: {prompt}
+$INPUT: Current test suite, coverage reports, code to test
+$CONSTRAINTS: Tests must be maintainable, fast, and reliable
+$OUTPUT_EXPECTED: Comprehensive test suite
+$ACCEPTANCE_CRITERIA:
+  - [ ] Unit tests for all functions
+  - [ ] Integration tests for workflows
+  - [ ] Edge cases covered
+  - [ ] Tests are fast and reliable
+  - [ ] Coverage target met
+$DEADLINE: Before feature release""",
+        
+        'performance': """# Kiro Prompt
+$GOAL: Optimize performance
+$CONTEXT: {prompt}
+$INPUT: Performance profiles, bottleneck analysis, benchmarks
+$CONSTRAINTS: Maintain functionality, avoid premature optimization
+$OUTPUT_EXPECTED: Optimized code with performance benchmarks
+$ACCEPTANCE_CRITERIA:
+  - [ ] Performance baseline measured
+  - [ ] Bottlenecks identified
+  - [ ] Optimizations implemented
+  - [ ] Performance improved by target %
+  - [ ] No functionality regression
+$DEADLINE: Based on user impact"""
     }
     
-    template = optimization_templates.get(task_type, "Original request: {prompt}")
+    template = kiro_templates.get(task_type, """# Kiro Prompt
+$GOAL: Complete the requested task
+$CONTEXT: {prompt}
+$INPUT: Relevant files and documentation
+$CONSTRAINTS: Follow best practices
+$OUTPUT_EXPECTED: Completed task with tests
+$ACCEPTANCE_CRITERIA:
+  - [ ] Task completed as requested
+  - [ ] Tests added/updated
+  - [ ] Documentation updated
+$DEADLINE: As appropriate""")
+    
     return template.format(prompt=prompt)
 
-def parse_simple_yaml(file_path):
-    """Parse simple YAML without external dependencies"""
+def parse_markdown_frontmatter(file_path):
+    """Parse YAML front-matter from markdown file"""
     data = {}
-    current_key = None
+    in_frontmatter = False
+    frontmatter_lines = []
     
     with open(file_path, 'r') as f:
         for line in f:
             line = line.rstrip()
-            if not line or line.startswith('#'):
-                continue
-                
-            if ':' in line and not line.startswith(' '):
-                key, value = line.split(':', 1)
-                key = key.strip()
-                value = value.strip()
-                data[key] = value
+            
+            # Check for front-matter boundaries
+            if line == '---':
+                if not in_frontmatter:
+                    in_frontmatter = True
+                    continue
+                else:
+                    # End of front-matter
+                    break
+            
+            if in_frontmatter:
+                frontmatter_lines.append(line)
+    
+    # Parse the front-matter
+    current_key = None
+    for line in frontmatter_lines:
+        if not line or line.startswith('#'):
+            continue
+            
+        # Handle list items
+        if line.startswith('  - '):
+            if current_key and current_key in data:
+                if not isinstance(data[current_key], list):
+                    data[current_key] = []
+                data[current_key].append(line[4:].strip())
+        # Handle key-value pairs
+        elif ':' in line and not line.startswith(' '):
+            key, value = line.split(':', 1)
+            key = key.strip()
+            value = value.strip()
+            current_key = key
+            data[key] = value
+        # Handle nested data (simple approach)
+        elif line.startswith('  ') and ':' in line:
+            # Skip nested data for now
+            continue
     
     return data
 
 def load_agents():
-    """Load available agents"""
+    """Load available agents from markdown files"""
     agents = []
-    for agent_file in AGENTS_DIR.glob("agent-*.yml"):
+    for agent_file in AGENTS_DIR.glob("agent-*.md"):
         try:
-            agent_data = parse_simple_yaml(agent_file)
+            agent_data = parse_markdown_frontmatter(agent_file)
             agent_data['name'] = agent_file.stem
             
-            # Parse specializations
-            if 'specializations' in agent_data:
-                agent_data['specializations_list'] = [s.strip() for s in agent_data['specializations'].split('-')[1:]]
+            # Ensure specializations is a list
+            if 'specializations' in agent_data and isinstance(agent_data['specializations'], list):
+                agent_data['specializations_list'] = agent_data['specializations']
             
             if agent_data.get('tier') != 'suspended':
                 agents.append(agent_data)
-        except:
+        except Exception as e:
+            # Log error but continue
+            print(f"Error loading agent {agent_file}: {e}", file=sys.stderr)
             continue
     return agents
 
