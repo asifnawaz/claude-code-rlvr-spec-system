@@ -1,4 +1,4 @@
-# Kiro-RLVR Claude Code Configuration
+# Doom-RLVR Claude Code Configuration
 
 ## Overview
 
@@ -83,7 +83,7 @@ grep "agent-bugfix-senior" .claude/scoreboard/rlvr.jsonl | tail -5
 
 ```bash
 # Force specific agent
-export KIRO_AGENT="agent-feature-senior"
+export DOOM_AGENT="agent-feature-senior"
 # Run your command
 ```
 

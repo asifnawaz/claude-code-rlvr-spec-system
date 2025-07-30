@@ -1,4 +1,4 @@
-# Kiro-RLVR Naming Standards Summary
+# Doom-RLVR Naming Standards Summary
 
 ## Final Naming Convention
 
@@ -14,8 +14,8 @@
 
 ### 2. Scripts (.py/.sh)
 - **File names**: kebab-case
-  - `kiro-cli.py`
-  - `kiro-cli-simple.py`
+  - `doom-cli.py`
+  - `doom-cli-simple.py`
   - `rlvr-evaluate.py`
   - `tier-updater.py`
   - `manual-assign.py`
@@ -27,8 +27,8 @@
 
 ### 3. Commands (.md)
 - **All use kebab-case**:
-  - `kiro-status.md`
-  - `kiro-leaderboard.md`
+  - `doom-status.md`
+  - `doom-leaderboard.md`
   - `start-sprint.md`
   - `end-sprint.md`
   - `burndown.md`

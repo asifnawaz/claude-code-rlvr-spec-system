@@ -2,7 +2,7 @@
 
 ## Summary
 
-The Kiro-RLVR implementation has been updated to comply with the Product Requirements Document (PRD). All major requirements have been addressed with appropriate adaptations for Claude Code's actual capabilities.
+The Doom-RLVR implementation has been updated to comply with the Product Requirements Document (PRD). All major requirements have been addressed with appropriate adaptations for Claude Code's actual capabilities.
 
 ## Implemented Features ✅
 
@@ -11,10 +11,10 @@ The Kiro-RLVR implementation has been updated to comply with the Product Require
 - **Implementation**: 
   - Converted all agents from `.yml` to `.md` format
   - YAML front-matter contains configuration
-  - Markdown body contains agent instructions and Kiro template guidance
+  - Markdown body contains agent instructions and Doom template guidance
   - Updated all scripts to parse markdown front-matter
 
-### 2. Kiro Prompt Template (FR-6)
+### 2. Doom Prompt Template (FR-6)
 - **PRD Requirement**: Structured format with `$GOAL`, `$CONTEXT`, etc.
 - **Implementation**:
   - Created `validate-prompt-structure.py` for template validation
@@ -41,7 +41,7 @@ The Kiro-RLVR implementation has been updated to comply with the Product Require
 ### 5. RLVR Integration
 - **PRD Requirement**: Automatic reward evaluation after tasks
 - **Implementation**:
-  - Enhanced RLVR evaluator with Kiro template scoring
+  - Enhanced RLVR evaluator with Doom template scoring
   - Updated weights to include template compliance
   - Tracks acceptance criteria completion
   - Integrated with sprint metrics
@@ -75,7 +75,7 @@ The Kiro-RLVR implementation has been updated to comply with the Product Require
 ├── agents/           # Markdown files with YAML front-matter ✅
 ├── commands/         # Sprint management commands ✅
 ├── hooks/
-│   ├── UserPromptSubmit      # Kiro template integration ✅
+│   ├── UserPromptSubmit      # Doom template integration ✅
 │   ├── PreToolUse           # Tool validation ✅
 │   ├── PostToolUse          # Usage tracking
 │   ├── Stop                 # RLVR evaluation ✅
@@ -87,10 +87,10 @@ The Kiro-RLVR implementation has been updated to comply with the Product Require
 └── settings.json     # Proper hook configuration ✅
 ```
 
-## Kiro Prompt Template Example
+## Doom Prompt Template Example
 
 ```
-# Kiro Prompt
+# Doom Prompt
 $GOAL: Fix the authentication bug
 $CONTEXT: Users cannot log in with Google OAuth
 $INPUT: Error logs, auth.js, oauth-config.json
@@ -125,7 +125,7 @@ The evaluation now includes:
 - **Complexity**: 10%
 - **CI Status**: 10%
 - **Review**: 10%
-- **Kiro Template**: 15% (NEW)
+- **Doom Template**: 15% (NEW)
 
 ## Testing the Implementation
 
@@ -155,4 +155,4 @@ While not required by the PRD, these could improve the system:
 
 ## Conclusion
 
-The Kiro-RLVR implementation now fully complies with the PRD requirements while working within Claude Code's actual constraints. The system provides intelligent task routing, performance evaluation, and continuous improvement through the RLVR mechanism.
+The Doom-RLVR implementation now fully complies with the PRD requirements while working within Claude Code's actual constraints. The system provides intelligent task routing, performance evaluation, and continuous improvement through the RLVR mechanism.

@@ -1,6 +1,6 @@
-# Kiro-RLVR Mermaid Diagrams
+# Doom-RLVR Mermaid Diagrams
 
-This document contains all Mermaid diagrams for the Kiro-RLVR system. You can copy these into any Mermaid-compatible viewer or documentation system.
+This document contains all Mermaid diagrams for the Doom-RLVR system. You can copy these into any Mermaid-compatible viewer or documentation system.
 
 ## 1. High-Level System Flow
 

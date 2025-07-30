@@ -1,8 +1,8 @@
-# Kiro-RLVR Implementation Guide
+# Doom-RLVR Implementation Guide
 
 ## Getting Started
 
-This guide provides step-by-step instructions for implementing the Kiro-RLVR Context Engineering Platform for Claude Code.
+This guide provides step-by-step instructions for implementing the Doom-RLVR Context Engineering Platform for Claude Code.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ This guide provides step-by-step instructions for implementing the Kiro-RLVR Con
 ## Project Structure
 
 ```
-kiro-rlvr/
+doom-rlvr/
 ├── .claude/
 │   ├── agents/                  # Agent definitions
 │   │   ├── agent-bugfix-junior.yml
@@ -34,7 +34,7 @@ kiro-rlvr/
 │   │   ├── rlvr.jsonl
 │   │   └── agent_tiers.json
 │   ├── config/                 # Configuration files
-│   │   ├── kiro-rlvr.toml
+│   │   ├── doom-rlvr.toml
 │   │   ├── evaluator-config.json
 │   │   ├── sandbox-config.yml
 │   │   └── hooks.yaml
@@ -53,7 +53,7 @@ kiro-rlvr/
 
 ```bash
 # Create project directory
-mkdir kiro-rlvr && cd kiro-rlvr
+mkdir doom-rlvr && cd doom-rlvr
 
 # Initialize git repository
 git init
@@ -76,7 +76,7 @@ pip install typer pydantic pyyaml jsonlines httpx fastapi uvicorn
 ### Main Configuration File
 
 ```toml
-# .claude/config/kiro-rlvr.toml
+# .claude/config/doom-rlvr.toml
 
 [coordinator]
 port = 8080
@@ -154,7 +154,7 @@ class Agent(BaseModel):
     config: Dict
 
 class Coordinator:
-    def __init__(self, config_path: str = ".claude/config/kiro-rlvr.toml"):
+    def __init__(self, config_path: str = ".claude/config/doom-rlvr.toml"):
         self.config = self._load_config(config_path)
         self.agents = self._load_agents()
         self.task_queue: List[Task] = []
@@ -278,7 +278,7 @@ class Coordinator:
 
 @app.command()
 def serve(
-    config: str = typer.Option(".claude/config/kiro-rlvr.toml", help="Config file path"),
+    config: str = typer.Option(".claude/config/doom-rlvr.toml", help="Config file path"),
     port: int = typer.Option(8080, help="API port")
 ):
     """Start the coordinator service"""
@@ -289,7 +289,7 @@ def serve(
     from fastapi import FastAPI
     import uvicorn
     
-    api = FastAPI(title="Kiro-RLVR Coordinator")
+    api = FastAPI(title="Doom-RLVR Coordinator")
     
     @api.post("/tasks")
     async def create_task(task: Task):
@@ -437,7 +437,7 @@ import asyncio
 from datetime import datetime
 
 async def submit_bugfix_task():
-    """Example: Submit a bug fix task to Kiro-RLVR"""
+    """Example: Submit a bug fix task to Doom-RLVR"""
     
     task = {
         "id": f"bug-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
@@ -487,7 +487,7 @@ if __name__ == "__main__":
 
 ```bash
 # 1. Start the coordinator
-cd kiro-rlvr
+cd doom-rlvr
 source venv/bin/activate
 python src/coordinator/coordinator.py serve
 
@@ -495,10 +495,10 @@ python src/coordinator/coordinator.py serve
 python examples/submit_task.py
 
 # 3. Monitor progress
-kiro logs --tail --task bug-20250729-143022
+doom logs --tail --task bug-20250729-143022
 
 # 4. Check leaderboard
-kiro leaderboard --metric reward
+doom leaderboard --metric reward
 ```
 
 ### Production Deployment
@@ -546,19 +546,19 @@ import time
 
 # Define metrics
 task_counter = Counter(
-    'kiro_tasks_total',
+    'doom_tasks_total',
     'Total number of tasks processed',
     ['status', 'type', 'agent_tier']
 )
 
 task_duration = Histogram(
-    'kiro_task_duration_seconds',
+    'doom_task_duration_seconds',
     'Task execution duration',
     ['type', 'agent_tier']
 )
 
 agent_reward_gauge = Gauge(
-    'kiro_agent_reward',
+    'doom_agent_reward',
     'Current agent reward score',
     ['agent_name']
 )
@@ -654,11 +654,11 @@ sleep 5
 TASK_ID=$(python examples/submit_task.py | grep "Task submitted" | cut -d: -f2 | tr -d ' ')
 
 # Wait for completion
-timeout 300 bash -c "while ! kiro status --task $TASK_ID | grep -q 'completed'; do sleep 5; done"
+timeout 300 bash -c "while ! doom status --task $TASK_ID | grep -q 'completed'; do sleep 5; done"
 
 # Verify results
-kiro status --task $TASK_ID
-kiro scores --agent $(kiro status --task $TASK_ID | jq -r .assigned_agent)
+doom status --task $TASK_ID
+doom scores --agent $(doom status --task $TASK_ID | jq -r .assigned_agent)
 
 # Cleanup
 docker-compose down
@@ -762,10 +762,10 @@ sandbox:
 1. **Agent Selection Failures**
    ```bash
    # Check available agents
-   kiro agents list
+   doom agents list
    
    # Verify agent specializations match task type
-   kiro agents show <agent-name>
+   doom agents show <agent-name>
    ```
 
 2. **Hook Execution Errors**
@@ -774,7 +774,7 @@ sandbox:
    TASK_ID=test-001 AGENT_NAME=test .claude/hooks/TaskStart
    
    # Check hook logs
-   kiro logs --hook TaskStart --tail
+   doom logs --hook TaskStart --tail
    ```
 
 3. **Reward Calculation Issues**

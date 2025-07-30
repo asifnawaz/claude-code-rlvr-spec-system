@@ -1,8 +1,8 @@
-# Kiro-RLVR Hooks Documentation
+# Doom-RLVR Hooks Documentation
 
 ## Overview
 
-The Kiro-RLVR system uses Claude Code's hook system to intercept and modify behavior at key points in the execution lifecycle.
+The Doom-RLVR system uses Claude Code's hook system to intercept and modify behavior at key points in the execution lifecycle.
 
 ## Hook Implementation
 
@@ -54,7 +54,7 @@ This hook:
 ```
 UserPromptSubmit (task.yml detected)
     ↓
-Sets KIRO_TASK_ID, KIRO_AGENT_NAME environment variables
+Sets DOOM_TASK_ID, DOOM_AGENT_NAME environment variables
     ↓
 PreToolUse (validates each tool call)
     ↓
@@ -67,9 +67,9 @@ Stop (evaluates and rewards)
 
 The hooks communicate through environment variables:
 
-- `KIRO_TASK_ID`: Current task identifier
-- `KIRO_AGENT_NAME`: Assigned agent name
-- `KIRO_AGENT_TIER`: Agent tier (junior/senior/principal)
+- `DOOM_TASK_ID`: Current task identifier
+- `DOOM_AGENT_NAME`: Assigned agent name
+- `DOOM_AGENT_TIER`: Agent tier (junior/senior/principal)
 - `CLAUDE_PROJECT_DIR`: Project root directory (set by Claude Code)
 
 ## Configuration

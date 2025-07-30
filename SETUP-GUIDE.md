@@ -1,21 +1,21 @@
-# Kiro-RLVR Setup Guide for Claude Code
+# Doom-RLVR Setup Guide for Claude Code
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Claude Code installed and configured
 - Python 3.8+ (comes with Claude Code)
-- A project directory where you want to use Kiro-RLVR
+- A project directory where you want to use Doom-RLVR
 
-### 1. Clone or Copy Kiro-RLVR
+### 1. Clone or Copy Doom-RLVR
 
 ```bash
 # Option A: Clone the repository
-git clone https://github.com/your-username/kiro-spec-claude.git
-cd kiro-spec-claude
+git clone https://github.com/your-username/doom-spec-claude.git
+cd doom-spec-claude
 
 # Option B: Copy the .claude directory to your project
-cp -r /path/to/kiro-spec-claude/.claude /your/project/
+cp -r /path/to/doom-spec-claude/.claude /your/project/
 ```
 
 ### 2. Verify Installation
@@ -33,11 +33,11 @@ ls .claude/agents/
 
 # Check scripts
 ls .claude/scripts/
-# Should show: kiro-cli-simple.py, rlvr-evaluate.py, etc.
+# Should show: doom-cli-simple.py, rlvr-evaluate.py, etc.
 
 # Check commands
 ls .claude/commands/
-# Should show: kiro-status.md, start-sprint.md, end-sprint.md, burndown.md, etc.
+# Should show: doom-status.md, start-sprint.md, end-sprint.md, burndown.md, etc.
 ```
 
 ### 3. Initialize Claude Code Settings
@@ -68,7 +68,7 @@ Just type your request naturally:
 The system will automatically:
 1. Detect the task type (bugfix/feature/performance)
 2. Determine priority
-3. Generate a Kiro-compliant prompt with $GOAL, $CONTEXT, etc.
+3. Generate a Doom-compliant prompt with $GOAL, $CONTEXT, etc.
 4. Select the best agent from markdown profiles
 5. Validate tool usage with security checks
 6. Execute with proper constraints
@@ -94,10 +94,10 @@ EOF
 
 ```bash
 # Task Management
-/kiro-status          # View recent tasks
-/kiro-leaderboard     # View agent performance with RLVR scores
-/kiro-agent <name>    # View specific agent details
-/kiro-report          # Generate comprehensive task report
+/doom-status          # View recent tasks
+/doom-leaderboard     # View agent performance with RLVR scores
+/doom-agent <name>    # View specific agent details
+/doom-report          # Generate comprehensive task report
 
 # Sprint Management
 /start-sprint "Sprint Name" [days]  # Start a new sprint
@@ -110,11 +110,11 @@ EOF
 ```
 .claude/
 ├── hooks/
-│   ├── UserPromptSubmit             # Autonomous task detection & Kiro template generation
+│   ├── UserPromptSubmit             # Autonomous task detection & Doom template generation
 │   ├── PreToolUse                   # Tool permission enforcement
 │   ├── PostToolUse                  # Tool usage tracking
 │   ├── Stop                         # Task evaluation & feedback
-│   ├── validate-prompt-structure.py # Kiro template validator
+│   ├── validate-prompt-structure.py # Doom template validator
 │   └── pre-check.py                 # Security validation hook
 ├── agents/                          # Markdown files with YAML front-matter
 │   ├── agent-bugfix-junior.md
@@ -124,28 +124,28 @@ EOF
 │   ├── agent-refactor-principal.md
 │   └── agent-security-senior.md
 ├── commands/                        # Sprint and task management commands
-│   ├── kiro-status.md
-│   ├── kiro-leaderboard.md
+│   ├── doom-status.md
+│   ├── doom-leaderboard.md
 │   ├── start-sprint.md
 │   ├── end-sprint.md
 │   └── burndown.md
 ├── scripts/
-│   ├── kiro-cli-simple.py          # Main CLI tool
+│   ├── doom-cli-simple.py          # Main CLI tool
 │   └── rlvr-evaluate.py            # Evaluation engine with template scoring
 ├── prompts/
-│   └── optimization-templates.json  # Kiro template patterns
+│   └── optimization-templates.json  # Doom template patterns
 ├── tasks/                           # Task metadata storage
 ├── scoreboard/                      # Performance metrics & RLVR scores
 ├── feedback/                        # Improvement suggestions
 └── sprints/                         # Sprint tracking data
 ```
 
-## 📋 Kiro Prompt Template
+## 📋 Doom Prompt Template
 
-All tasks are automatically structured using the Kiro template format:
+All tasks are automatically structured using the Doom template format:
 
 ```
-# Kiro Prompt
+# Doom Prompt
 $GOAL: <single objective sentence>
 $CONTEXT: <brief background>
 $INPUT: <relevant artifacts / code refs>
@@ -219,13 +219,13 @@ description: Your task description
 
 ```bash
 # Expand all pending tasks
-/kiro-expand-all
+/doom-expand-all
 
 # Check dependencies
-/kiro-check-deps
+/doom-check-deps
 
 # Generate task reports
-/kiro-report
+/doom-report
 ```
 
 ### Performance Tuning
@@ -330,10 +330,10 @@ chmod +x .claude/hooks/*
 # - Reward: 0.85
 
 # 5. Check results
-/kiro-status
+/doom-status
 # Shows completed task with high reward
 
-/kiro-leaderboard
+/doom-leaderboard
 # Shows agent-bugfix-senior performance improved
 ```
 
@@ -345,7 +345,7 @@ chmod +x .claude/hooks/*
 cd /your/existing/project
 
 # Copy only the .claude directory
-cp -r /path/to/kiro-spec-claude/.claude .
+cp -r /path/to/doom-spec-claude/.claude .
 
 # Verify Claude Code picks it up
 ls .claude/hooks/
@@ -392,4 +392,4 @@ If you encounter issues:
 3. Verify file permissions
 4. Ensure Python 3.8+ is available
 
-Remember: The system is designed to be autonomous. Just describe what you need, and Kiro-RLVR handles the rest!
+Remember: The system is designed to be autonomous. Just describe what you need, and Doom-RLVR handles the rest!

@@ -1,10 +1,10 @@
-# Kiro-RLVR Hooks and Evaluation Specification
+# Doom-RLVR Hooks and Evaluation Specification
 
 ## Hook System Architecture
 
 ### Overview
 
-The Kiro-RLVR hook system enables event-driven automation throughout the agent lifecycle. Hooks are sandboxed scripts that execute at specific points during task processing, providing integration points for evaluation, monitoring, and external system coordination.
+The Doom-RLVR hook system enables event-driven automation throughout the agent lifecycle. Hooks are sandboxed scripts that execute at specific points during task processing, providing integration points for evaluation, monitoring, and external system coordination.
 
 ## Hook Types and Events
 
@@ -176,7 +176,7 @@ fi
 rm -rf "$PROJECT_ROOT/.claude/tasks/$TASK_ID/tmp"
 
 # Trigger next task if queued
-kiro next --auto-assign
+doom next --auto-assign
 ```
 
 ## RLVR Evaluation System
@@ -519,7 +519,7 @@ sandbox:
       - /bin
     writable_paths:
       - $PROJECT_ROOT
-      - /tmp/kiro-sandbox
+      - /tmp/doom-sandbox
     forbidden_paths:
       - /etc/passwd
       - /etc/shadow
@@ -553,7 +553,7 @@ sandbox:
       - GITHUB_TOKEN
     set_vars:
       PATH: /usr/local/bin:/usr/bin:/bin
-      HOME: /tmp/kiro-sandbox/home
+      HOME: /tmp/doom-sandbox/home
 ```
 
 ### Hook Permissions Model
@@ -814,12 +814,12 @@ hooks:
 
 ```bash
 # Hook management CLI
-kiro hooks list                    # List all registered hooks
-kiro hooks enable <name>          # Enable a hook
-kiro hooks disable <name>         # Disable a hook
-kiro hooks test <name> [--event]  # Test hook execution
-kiro hooks logs <name> [--tail]   # View hook execution logs
-kiro hooks validate               # Validate all hook configurations
+doom hooks list                    # List all registered hooks
+doom hooks enable <name>          # Enable a hook
+doom hooks disable <name>         # Disable a hook
+doom hooks test <name> [--event]  # Test hook execution
+doom hooks logs <name> [--tail]   # View hook execution logs
+doom hooks validate               # Validate all hook configurations
 ```
 
-This completes the comprehensive hook and evaluation specification for the Kiro-RLVR system.
+This completes the comprehensive hook and evaluation specification for the Doom-RLVR system.

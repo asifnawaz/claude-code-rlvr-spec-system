@@ -1,6 +1,6 @@
-# Contributing to Kiro-RLVR
+# Contributing to Doom-RLVR
 
-Thank you for your interest in contributing to Kiro-RLVR! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to Doom-RLVR! This document provides guidelines for contributing to the project.
 
 ## 🎯 How to Contribute
 
@@ -43,7 +43,7 @@ Thank you for your interest in contributing to Kiro-RLVR! This document provides
 
 ### Constraints
 
-Remember Kiro-RLVR's constraints:
+Remember Doom-RLVR's constraints:
 - **No external dependencies** - Python standard library only
 - **Claude Code compatible** - Must work within Claude Code environment
 - **File-based state** - No persistent processes or databases
@@ -167,4 +167,4 @@ Contributors will be:
 - Read existing documentation
 - Ask in pull request comments
 
-Thank you for contributing to Kiro-RLVR!
+Thank you for contributing to Doom-RLVR!

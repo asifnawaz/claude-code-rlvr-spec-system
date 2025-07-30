@@ -1,4 +1,4 @@
-// Kiro-RLVR Data Models TypeScript Specification
+// Doom-RLVR Data Models TypeScript Specification
 
 // Core Domain Models
 

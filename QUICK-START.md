@@ -1,20 +1,20 @@
-# Kiro-RLVR Quick Start Guide
+# Doom-RLVR Quick Start Guide
 
-## 🎯 Start Using Kiro-RLVR in 30 Seconds
+## 🎯 Start Using Doom-RLVR in 30 Seconds
 
 ### Step 1: Enter Your Project Directory
 ```bash
 cd /path/to/your/project
 ```
 
-### Step 2: Copy Kiro-RLVR
+### Step 2: Copy Doom-RLVR
 ```bash
 # If you have the repo cloned:
-cp -r /path/to/kiro-spec-claude/.claude .
+cp -r /path/to/doom-spec-claude/.claude .
 
 # Or clone it first:
-git clone https://github.com/your-org/kiro-spec-claude /tmp/kiro-spec-claude
-cp -r /tmp/kiro-spec-claude/.claude .
+git clone https://github.com/asifnawaz/claude-code-rlvr-spec-system /tmp/doom-spec-claude
+cp -r /tmp/doom-spec-claude/.claude .
 ```
 
 ### Step 3: Start Using Natural Language
@@ -29,11 +29,11 @@ That's it! Just type what you need:
 
 ## 🚀 What Happens Next?
 
-When you type a request, Kiro-RLVR automatically:
+When you type a request, Doom-RLVR automatically:
 
 1. **Analyzes** your request
 2. **Detects** the task type (bug, feature, etc.)
-3. **Generates** Kiro template with $GOAL, $CONTEXT, etc.
+3. **Generates** Doom template with $GOAL, $CONTEXT, etc.
 4. **Selects** the best agent from .md profiles
 5. **Validates** tool usage for security
 6. **Executes** with quality constraints
@@ -44,10 +44,10 @@ When you type a request, Kiro-RLVR automatically:
 
 ```bash
 # Check recent tasks
-/kiro-status
+/doom-status
 
 # View agent performance
-/kiro-leaderboard
+/doom-leaderboard
 
 # Start a sprint
 /start-sprint "Sprint 1" 14
@@ -62,7 +62,7 @@ When you type a request, Kiro-RLVR automatically:
 ```
 Input: "Users can't upload profile pictures larger than 2MB"
 → Detected: Bugfix task
-→ Generated: Kiro template with $GOAL, $CONTEXT, etc.
+→ Generated: Doom template with $GOAL, $CONTEXT, etc.
 → Selected: agent-bugfix-senior (from .md profile)
 → Validated: Tool usage checked by pre-check.py
 → Score: Template compliance adds 15% to RLVR
@@ -72,7 +72,7 @@ Input: "Users can't upload profile pictures larger than 2MB"
 ```
 Input: "Add two-factor authentication"
 → Detected: Feature + Security task
-→ Generated: Kiro template with security constraints
+→ Generated: Doom template with security constraints
 → Selected: agent-security-senior (specialized in auth)
 → Added: $ACCEPTANCE_CRITERIA with security checklist
 → Tracked: Sprint velocity and burndown

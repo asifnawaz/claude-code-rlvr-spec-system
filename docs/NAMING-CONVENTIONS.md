@@ -1,4 +1,4 @@
-# Kiro-RLVR Naming Conventions
+# Doom-RLVR Naming Conventions
 
 ## Problem Statement
 
@@ -33,8 +33,8 @@ Claude Code hooks have special requirements, so we'll use a hybrid approach:
 
 #### 2. Scripts (.py or .sh)
 Keep descriptive names but convert to kebab-case:
-- `kiro-cli.py` (was: kiro-cli.py)
-- `kiro-cli-simple.py` (was: kiro-cli-simple.py)
+- `doom-cli.py` (was: doom-cli.py)
+- `doom-cli-simple.py` (was: doom-cli-simple.py)
 - `rlvr-evaluate.py` (was: rlvr-evaluate.py)
 - `tier-updater.py` (was: tier-updater.py)
 - `manual-assign.py` (was: manual-assign.py)
@@ -42,10 +42,10 @@ Keep descriptive names but convert to kebab-case:
 
 #### 3. Commands (.md)
 Already following the convention - no changes needed:
-- `kiro-status.md` ✓
-- `kiro-leaderboard.md` ✓
-- `kiro-report.md` ✓
-- `kiro-agent.md` ✓
+- `doom-status.md` ✓
+- `doom-leaderboard.md` ✓
+- `doom-report.md` ✓
+- `doom-agent.md` ✓
 - `start-sprint.md` ✓
 - `end-sprint.md` ✓
 - `burndown.md` ✓
@@ -84,7 +84,7 @@ Already following the convention - no changes needed:
    - Update hook name references to new names
    - Ensure Claude Code recognizes .py extension
 
-2. **Script Imports** (`kiro-cli.py`, `rlvr-evaluate.py`):
+2. **Script Imports** (`doom-cli.py`, `rlvr-evaluate.py`):
    - Update import statements to use new module names
    - Update any dynamic loading code
 

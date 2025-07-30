@@ -1,8 +1,8 @@
-# Kiro-RLVR Technical Specification
+# Doom-RLVR Technical Specification
 
 ## Overview
 
-Kiro-RLVR is a Context Engineering Platform for Claude Code that implements a multi-agent system with Reinforcement Learning and Variable Rewards (RLVR) to improve code quality and agent performance through automated evaluation and tier-based routing.
+Doom-RLVR is a Context Engineering Platform for Claude Code that implements a multi-agent system with Reinforcement Learning and Variable Rewards (RLVR) to improve code quality and agent performance through automated evaluation and tier-based routing.
 
 ## System Components
 
@@ -140,18 +140,18 @@ def update_tiers():
 
 ```bash
 # Task management
-kiro assign --task <id> [--force-agent <name>]
-kiro status [--format json|table]
-kiro logs --tail [--agent <name>]
+doom assign --task <id> [--force-agent <name>]
+doom status [--format json|table]
+doom logs --tail [--agent <name>]
 
 # Agent management
-kiro agents list [--tier <tier>]
-kiro agents promote <name>
-kiro agents suspend <name> [--reason <text>]
+doom agents list [--tier <tier>]
+doom agents promote <name>
+doom agents suspend <name> [--reason <text>]
 
 # Scoreboard operations
-kiro scores --agent <name> [--last <n>]
-kiro leaderboard [--metric reward|tasks|success-rate]
+doom scores --agent <name> [--last <n>]
+doom leaderboard [--metric reward|tasks|success-rate]
 ```
 
 ### Hook Events
@@ -339,7 +339,7 @@ evaluator:
 
 ### Project Configuration
 ```toml
-# .claude/kiro-rlvr.toml
+# .claude/doom-rlvr.toml
 [coordinator]
 port = 8080
 max_concurrent_agents = 10
@@ -423,17 +423,17 @@ agent:
 ### Metrics
 ```prometheus
 # Task metrics
-kiro_tasks_total{status="completed|failed|timeout"}
-kiro_task_duration_seconds{agent="name", percentile="p50|p90|p99"}
+doom_tasks_total{status="completed|failed|timeout"}
+doom_task_duration_seconds{agent="name", percentile="p50|p90|p99"}
 
 # Agent metrics
-kiro_agent_reward{agent="name", component="test|lint|security"}
-kiro_agent_tier{agent="name", tier="junior|senior|principal"}
+doom_agent_reward{agent="name", component="test|lint|security"}
+doom_agent_tier{agent="name", tier="junior|senior|principal"}
 
 # System metrics
-kiro_coordinator_queue_length
-kiro_evaluator_duration_seconds
-kiro_hooks_failed_total{hook="name"}
+doom_coordinator_queue_length
+doom_evaluator_duration_seconds
+doom_hooks_failed_total{hook="name"}
 ```
 
 ### Dashboards
@@ -500,31 +500,31 @@ export GITHUB_TOKEN="ghp-..."
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/org/kiro-rlvr
-cd kiro-rlvr
+git clone https://github.com/org/doom-rlvr
+cd doom-rlvr
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Initialize project structure
-./scripts/init-kiro-rlvr.sh
+./scripts/init-doom-rlvr.sh
 
 # Configure agents
 cp .claude/agents/template.yml .claude/agents/agent-bugfix-junior.yml
 # Edit agent configuration...
 
 # Start coordinator
-kiro serve --config .claude/kiro-rlvr.toml
+doom serve --config .claude/doom-rlvr.toml
 ```
 
 ### Verification
 ```bash
 # Check system status
-kiro status
+doom status
 
 # Submit test task
-kiro assign --task test-001 --type bugfix
+doom assign --task test-001 --type bugfix
 
 # View results
-kiro scores --agent agent-bugfix-junior --last 1
+doom scores --agent agent-bugfix-junior --last 1
 ```

@@ -1,21 +1,21 @@
-# Kiro-RLVR Setup Guide
+# Doom-RLVR Setup Guide
 
 ## Quick Start
 
 1. **Copy the `.claude` directory to your project root**
    ```bash
-   cp -r /path/to/kiro-spec-claude/.claude /your/project/
+   cp -r /path/to/doom-spec-claude/.claude /your/project/
    ```
 
 2. **Initialize the system**
    ```bash
    cd /your/project
-   python .claude/scripts/kiro-cli.py init
+   python .claude/scripts/doom-cli.py init
    ```
 
 3. **Create a task file**
    ```bash
-   cp /path/to/kiro-spec-claude/task.yml .
+   cp /path/to/doom-spec-claude/task.yml .
    # Edit task.yml with your requirements
    ```
 
@@ -38,22 +38,22 @@
 
 ```bash
 # View agent status
-python .claude/scripts/kiro-cli.py agents
+python .claude/scripts/doom-cli.py agents
 
 # Check task status
-python .claude/scripts/kiro-cli.py status
+python .claude/scripts/doom-cli.py status
 
 # View leaderboard
-python .claude/scripts/kiro-cli.py leaderboard
+python .claude/scripts/doom-cli.py leaderboard
 
 # Check agent scores
-python .claude/scripts/kiro-cli.py scores agent-bugfix-senior
+python .claude/scripts/doom-cli.py scores agent-bugfix-senior
 
 # Follow live logs
-python .claude/scripts/kiro-cli.py logs --tail
+python .claude/scripts/doom-cli.py logs --tail
 
 # Manually update tiers
-python .claude/scripts/kiro-cli.py update-tiers
+python .claude/scripts/doom-cli.py update-tiers
 ```
 
 ## Configuration
@@ -95,10 +95,10 @@ Edit `.claude/config/settings.json`:
 ### Real-time Dashboard
 ```bash
 # In one terminal
-python .claude/scripts/kiro-cli.py logs --tail
+python .claude/scripts/doom-cli.py logs --tail
 
 # In another terminal
-watch -n 5 'python .claude/scripts/kiro-cli.py leaderboard'
+watch -n 5 'python .claude/scripts/doom-cli.py leaderboard'
 ```
 
 ### Performance Analysis
@@ -184,15 +184,15 @@ done
 
 ### CI/CD Integration
 ```yaml
-# .github/workflows/kiro-tasks.yml
-name: Process Kiro Tasks
+# .github/workflows/doom-tasks.yml
+name: Process Doom Tasks
 on:
   issues:
     types: [labeled]
 
 jobs:
   process:
-    if: contains(github.event.label.name, 'kiro-task')
+    if: contains(github.event.label.name, 'doom-task')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

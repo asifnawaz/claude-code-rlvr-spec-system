@@ -6,19 +6,19 @@
 
 An intelligent context engineering platform that automatically detects task types, optimizes prompts, and routes work to specialized agents using Reinforcement Learning with Variable Rewards (RLVR).
 
-## 🌟 What is Kiro-RLVR?
+## 🌟 What is Doom-RLVR?
 
-Kiro-RLVR transforms Claude Code into an autonomous development assistant with structured task management. Simply describe what you need in natural language, and the system:
+Doom-RLVR transforms Claude Code into an autonomous development assistant with structured task management. Simply describe what you need in natural language, and the system:
 
 - **Detects** the type of task (bugfix, feature, refactor, etc.)
-- **Structures** your request using the Kiro Prompt Template
+- **Structures** your request using the Doom Prompt Template
 - **Selects** the best specialized agent from markdown-configured profiles
 - **Validates** tool usage for security and compliance
 - **Evaluates** work quality with RLVR metrics including template compliance
 - **Tracks** sprint progress and team velocity
 - **Improves** continuously through reinforcement learning
 
-![Kiro-RLVR Demo](https://github.com/your-org/kiro-spec-claude/assets/demo.gif)
+![Doom-RLVR Demo](https://github.com/asifnawaz/claude-code-rlvr-spec-system/assets/demo.gif)
 
 ## 🚀 Quick Start
 
@@ -31,7 +31,7 @@ mv claude-code-rlvr-spec-system/.claude ./
 
 # For your own projects, copy the necessary directories:
 cp -r .claude /your/project/
-cp -r kiro /your/project/
+cp -r doom /your/project/
 
 # That's it! The system is ready to use
 ```
@@ -48,7 +48,7 @@ Just type what you need:
 "There's a security issue in the user input validation"
 ```
 
-### 3. Let Kiro-RLVR Handle Everything
+### 3. Let Doom-RLVR Handle Everything
 
 The system automatically:
 - Understands your request
@@ -67,7 +67,7 @@ The system automatically:
 
 ### Specification Documents
 
-1. **[Technical Specification](specs/kiro-rlvr-technical-spec.md)** - System architecture details
+1. **[Technical Specification](specs/doom-rlvr-technical-spec.md)** - System architecture details
 2. **[API Specification](specs/api-specification.yaml)** - OpenAPI 3.0 specification
 3. **[Data Models](specs/data-models.ts)** - TypeScript interfaces
 4. **[Hooks and Evaluation](specs/hooks-and-evaluation.md)** - Hook system and RLVR logic
@@ -90,7 +90,7 @@ The system automatically:
 Agents are defined as `.md` files with YAML front-matter configuration.
 
 ### Continuous Improvement
-- **RLVR Evaluation**: Multi-metric quality assessment including Kiro template compliance
+- **RLVR Evaluation**: Multi-metric quality assessment including Doom template compliance
 - **Sprint Management**: Track velocity and burndown with `/start-sprint`, `/end-sprint`
 - **Performance Tracking**: Agent tier promotion/demotion based on rewards
 - **Security Validation**: Pre-tool checks for compliance
@@ -108,9 +108,9 @@ Agents are defined as `.md` files with YAML front-matter configuration.
 ```bash
 # Just describe what you need:
 "Add user authentication with JWT tokens"
-# Kiro-RLVR automatically:
+# Doom-RLVR automatically:
 # - Detects: feature task
-# - Generates Kiro template with $GOAL, $CONTEXT, etc.
+# - Generates Doom template with $GOAL, $CONTEXT, etc.
 # - Selects: agent-feature-senior from .md profiles
 # - Validates: security checks on tool usage
 # - Executes: with proper constraints
@@ -120,10 +120,10 @@ Agents are defined as `.md` files with YAML front-matter configuration.
 ### Commands
 ```bash
 # Task Management
-/kiro-status      # View recent tasks
-/kiro-leaderboard # See agent performance with RLVR scores
-/kiro-agent agent-bugfix-senior  # Agent details from .md file
-/kiro-report      # Generate comprehensive task report
+/doom-status      # View recent tasks
+/doom-leaderboard # See agent performance with RLVR scores
+/doom-agent agent-bugfix-senior  # Agent details from .md file
+/doom-report      # Generate comprehensive task report
 
 # Sprint Management (NEW)
 /start-sprint "Sprint 42" 14  # Start 14-day sprint
@@ -131,9 +131,9 @@ Agents are defined as `.md` files with YAML front-matter configuration.
 /end-sprint       # Complete sprint with metrics
 ```
 
-### Kiro Prompt Template
+### Doom Prompt Template
 
-All tasks are automatically structured using the Kiro template:
+All tasks are automatically structured using the Doom template:
 
 ```
 $GOAL: <single objective sentence>
@@ -174,7 +174,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system design.
 
 ## 🛠️ Customization
 
-While Kiro-RLVR works autonomously, you can customize:
+While Doom-RLVR works autonomously, you can customize:
 
 - Task detection keywords
 - Optimization templates
@@ -217,13 +217,13 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ## 🐛 Issues & Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/your-org/kiro-spec-claude/issues)
-- **Feature Requests**: [Discussions](https://github.com/your-org/kiro-spec-claude/discussions)
+- **Bug Reports**: [GitHub Issues](https://github.com/asifnawaz/claude-code-rlvr-spec-system/issues)
+- **Feature Requests**: [Discussions](https://github.com/asifnawaz/claude-code-rlvr-spec-system/discussions)
 - **Documentation**: See [docs/](docs/) folder
 
 ## 📊 Performance
 
-Kiro-RLVR has been tested on various codebases:
+Doom-RLVR has been tested on various codebases:
 
 | Metric | Improvement |
 |--------|-------------|
@@ -290,4 +290,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## License
 
-These specifications are provided as a reference implementation for the Kiro-RLVR system.
+These specifications are provided as a reference implementation for the Doom-RLVR system.

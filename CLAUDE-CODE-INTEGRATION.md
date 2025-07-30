@@ -1,8 +1,8 @@
-# Claude Code Integration Guide for Kiro-RLVR
+# Claude Code Integration Guide for Doom-RLVR
 
 ## Overview
 
-The Kiro-RLVR system is fully integrated with Claude Code's hooks, commands, and sub-agents API. This guide explains how the integration works and how to use it effectively.
+The Doom-RLVR system is fully integrated with Claude Code's hooks, commands, and sub-agents API. This guide explains how the integration works and how to use it effectively.
 
 ## Claude Code Hooks API
 
@@ -70,7 +70,7 @@ Hooks can return control decisions:
 
 ## Custom Commands
 
-Kiro-RLVR provides custom slash commands:
+Doom-RLVR provides custom slash commands:
 
 ### /assign-task
 Manually assign a task to a specific agent:
@@ -78,23 +78,23 @@ Manually assign a task to a specific agent:
 /assign-task --agent agent-bugfix-senior --force
 ```
 
-### /kiro-status
+### /doom-status
 Check task and agent status:
 ```bash
-/kiro-status --json
-/kiro-status --task bugfix-20240101-120000
+/doom-status --json
+/doom-status --task bugfix-20240101-120000
 ```
 
-### /kiro-leaderboard
+### /doom-leaderboard
 View agent performance rankings:
 ```bash
-/kiro-leaderboard --metric reward --limit 10
+/doom-leaderboard --metric reward --limit 10
 ```
 
-### /kiro-evaluate
+### /doom-evaluate
 Manually trigger evaluation:
 ```bash
-/kiro-evaluate
+/doom-evaluate
 ```
 
 ## Sub-Agents Integration
@@ -139,9 +139,9 @@ result = launch_subagent(
 The system uses environment variables for state management:
 
 - `CLAUDE_PROJECT_DIR`: Set by Claude Code, points to project root
-- `KIRO_TASK_ID`: Current task identifier  
-- `KIRO_AGENT_NAME`: Assigned agent name
-- `KIRO_AGENT_TIER`: Agent tier level
+- `DOOM_TASK_ID`: Current task identifier  
+- `DOOM_AGENT_NAME`: Assigned agent name
+- `DOOM_AGENT_TIER`: Agent tier level
 
 ## Security and Constraints
 
@@ -212,7 +212,7 @@ Agents are promoted/demoted based on rolling average rewards:
 1. **Let hooks handle routing**: Don't manually set agent context
 2. **Use task.yml**: Define clear task requirements
 3. **Monitor performance**: Check leaderboard regularly
-4. **Review logs**: Use `/kiro-status` to track progress
+4. **Review logs**: Use `/doom-status` to track progress
 5. **Trust evaluations**: Let RLVR guide agent improvements
 
 ## Troubleshooting

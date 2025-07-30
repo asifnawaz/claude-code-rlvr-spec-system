@@ -1,4 +1,4 @@
-# Kiro-RLVR Directory Restructure Plan
+# Doom-RLVR Directory Restructure Plan
 
 ## What Claude Code Needs in `.claude/`
 
@@ -24,8 +24,8 @@
 ### Should Move Outside `.claude/`:
 
 1. **Scripts** (utility/support scripts)
-   - `scripts/kiro-cli.py`
-   - `scripts/kiro-cli-simple.py`
+   - `scripts/doom-cli.py`
+   - `scripts/doom-cli-simple.py`
    - `scripts/rlvr-evaluate.py`
    - `scripts/tier-updater.py`
    - `scripts/manual-assign.py`
@@ -57,17 +57,17 @@
 ## Proposed New Structure
 
 ```
-kiro-spec-claude/
+doom-spec-claude/
 ├── .claude/                    # Only Claude Code essentials
 │   ├── hooks/                  # Core hooks
 │   ├── commands/               # Slash commands
 │   ├── settings.json          # Claude settings
 │   └── CLAUDE.md              # Claude context
 │
-├── kiro/                      # Main Kiro-RLVR implementation
+├── doom/                      # Main Doom-RLVR implementation
 │   ├── agents/                # Agent configurations
 │   ├── scripts/               # Utility scripts
-│   ├── config/                # Kiro configurations
+│   ├── config/                # Doom configurations
 │   └── prompts/               # Prompt templates
 │
 ├── data/                      # Runtime data (gitignored)
