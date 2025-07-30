@@ -18,7 +18,7 @@ This document explains which PRD requirements can be implemented with Claude Cod
 
 ### 3. Performance Tracking (FR-3)
 - **PRD**: Nightly tier recalculation
-- **Implementation**: Manual command `/kiro-update-tiers` or Python script
+- **Implementation**: Manual command `/doom-update-tiers` or Python script
 - **Limitation**: No cron capability in Claude Code
 
 ### 4. Agent Suspension (FR-4)
@@ -26,8 +26,8 @@ This document explains which PRD requirements can be implemented with Claude Cod
 - **Implementation**: ✓ Fully implemented in agent selection logic
 
 ### 5. CLI Status (FR-5)
-- **PRD**: `kiro status` returns leaderboard JSON
-- **Implementation**: ✓ Implemented as `/kiro-status` command
+- **PRD**: `doom status` returns leaderboard JSON
+- **Implementation**: ✓ Implemented as `/doom-status` command
 
 ## ❌ Cannot Implement
 
@@ -54,7 +54,7 @@ This document explains which PRD requirements can be implemented with Claude Cod
 ## 🔄 Adapted Features
 
 ### 1. Task Assignment
-- **PRD**: `kiro assign --task bug-123`
+- **PRD**: `doom assign --task bug-123`
 - **Adapted**: Place `task.yml` in project root, Claude auto-routes
 
 ### 2. Evaluation Timing

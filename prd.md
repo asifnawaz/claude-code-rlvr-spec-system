@@ -1,6 +1,6 @@
 # Product Requirements Document (CLI‑Aligned PRD)
 
-## Product: **Kiro‑RLVR Plugin for Claude Code CLI**
+## Product: **Doom‑RLVR Plugin for Claude Code CLI**
 
 ### 1 Background
 
@@ -23,7 +23,7 @@ Claude Code already provides sub‑agents (`/agents`), slash commands, hooks, a
 **Non‑Goals**
 
 * Replacing Claude’s internal auto‑delegation logic.
-* Inventing a parallel "kiro" CLI—**we extend via existing commands**.
+* Inventing a parallel "doom" CLI—**we extend via existing commands**.
 
 ### 3 Personas & Use Cases
 
@@ -41,15 +41,15 @@ Claude Code already provides sub‑agents (`/agents`), slash commands, hooks, a
 | FR‑2 | **Slash command `/leaderboard`** to print ranked agents.                                   | Markdown command in `.claude/commands/leaderboard.md` using `claude -p --output-format json`                                                                                                           |
 | FR‑3 | **Nightly tier recalculation** via cron.                                                   | `0 3 * * * claude -p "/recalc-tiers"`                                                                                                                                                                  |
 | FR‑4 | **Front‑matter integrity check** for `.md` agent files after tier rewrite.                 | Hook runs `yq eval` and aborts if invalid.                                                                                                                                                             |
-| FR‑5 | **Project scaffolding script**.                                                            | `./scripts/setup-kiro.sh` creates `.claude/agents/`, `.claude/hooks/`, `.claude/commands/`.                                                                                                            |
-| FR‑6 | **Kiro prompt template enforcement**.                                                      | Validation hook `validate-prompt-structure.py` ensures each task and sub-agent reply follow Kiro structured fields (`GOAL`, `CONTEXT`, `INPUT`, `OUTPUT_EXPECTED`, `DEADLINE`, `ACCEPTANCE_CRITERIA`). |
+| FR‑5 | **Project scaffolding script**.                                                            | `./scripts/setup-doom.sh` creates `.claude/agents/`, `.claude/hooks/`, `.claude/commands/`.                                                                                                            |
+| FR‑6 | **Doom prompt template enforcement**.                                                      | Validation hook `validate-prompt-structure.py` ensures each task and sub-agent reply follow Doom structured fields (`GOAL`, `CONTEXT`, `INPUT`, `OUTPUT_EXPECTED`, `DEADLINE`, `ACCEPTANCE_CRITERIA`). |
 | FR‑7 | **Sprint management slash commands** (`/start-sprint`, `/end-sprint`, `/burndown`).        | Markdown commands in `.claude/commands/` leverage RLVR metrics to prioritise backlog items.                                                                                                            |
 | FR‑8 | **Optional safeguard hook** to block unsafe or non‑compliant tool calls *before* they run. | Register `PreToolUse` hook → `python3 .claude/hooks/pre-check.py`.                                                                                                                                     |
 
-### 4.1 Kiro Prompt System Template
+### 4.1 Doom Prompt System Template
 
 ```
-# Kiro Prompt
+# Doom Prompt
 $GOAL: <single objective sentence>
 $CONTEXT: <brief background>
 $INPUT: <relevant artefacts / code refs>

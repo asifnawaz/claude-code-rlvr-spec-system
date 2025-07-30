@@ -1,4 +1,4 @@
-# Kiro-RLVR Implementation Notes
+# Doom-RLVR Implementation Notes
 
 ## Compliance with Claude Code
 
@@ -18,8 +18,8 @@ This implementation follows Claude Code's official guidelines with some creative
    - Leverages bash execution with !`command`
 
 3. **Environment Variables** (settings.json "env")
-   - KIRO_ENABLED
-   - KIRO_VERSION
+   - DOOM_ENABLED
+   - DOOM_VERSION
 
 4. **CLAUDE.md**
    - Project context for Claude Code

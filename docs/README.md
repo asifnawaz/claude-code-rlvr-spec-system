@@ -1,6 +1,6 @@
-# Kiro-RLVR System Files
+# Doom-RLVR System Files
 
-This directory contains the Kiro-RLVR multi-agent orchestration system for Claude Code.
+This directory contains the Doom-RLVR multi-agent orchestration system for Claude Code.
 
 ## Directory Structure
 
@@ -25,7 +25,7 @@ This directory contains the Kiro-RLVR multi-agent orchestration system for Claud
 ### Scripts
 - **rlvr-evaluate.py**: Calculates multi-component reward scores
 - **tier-updater.py**: Updates agent tiers based on performance
-- **kiro-cli.py**: Command-line interface for system management
+- **doom-cli.py**: Command-line interface for system management
 
 ### Agents
 - Multiple specialized agents with different tiers (junior/senior/principal)
@@ -36,7 +36,7 @@ This directory contains the Kiro-RLVR multi-agent orchestration system for Claud
 
 1. Create a `task.yml` file in your project root
 2. Run any Claude Code command - the task will be routed automatically
-3. Check results with: `python .claude/scripts/kiro-cli.py status`
+3. Check results with: `python .claude/scripts/doom-cli.py status`
 
 ## Configuration
 
@@ -51,11 +51,11 @@ Edit `.claude/config/settings.json` to adjust:
 View system activity:
 ```bash
 # Check agent standings
-python .claude/scripts/kiro-cli.py leaderboard
+python .claude/scripts/doom-cli.py leaderboard
 
 # View recent tasks
-python .claude/scripts/kiro-cli.py status
+python .claude/scripts/doom-cli.py status
 
 # Follow live events
-python .claude/scripts/kiro-cli.py logs --tail
+python .claude/scripts/doom-cli.py logs --tail
 ```

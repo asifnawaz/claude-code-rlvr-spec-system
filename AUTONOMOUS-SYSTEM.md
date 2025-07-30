@@ -1,8 +1,8 @@
-# Kiro-RLVR Autonomous Agent Handling System
+# Doom-RLVR Autonomous Agent Handling System
 
 ## Overview
 
-The Kiro-RLVR system now operates **completely autonomously**. Users simply provide their natural language prompts, and the system automatically:
+The Doom-RLVR system now operates **completely autonomously**. Users simply provide their natural language prompts, and the system automatically:
 
 1. **Detects task type** from the prompt content
 2. **Determines priority** based on urgency indicators
@@ -167,12 +167,12 @@ Agents automatically specialize based on:
 
 ### Check Recent Tasks
 ```bash
-/kiro-status
+/doom-status
 ```
 
 ### View Agent Performance
 ```bash
-/kiro-leaderboard
+/doom-leaderboard
 ```
 
 ### Analyze Feedback

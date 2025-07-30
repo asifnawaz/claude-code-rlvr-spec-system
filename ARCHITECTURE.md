@@ -1,8 +1,8 @@
-# Kiro-RLVR System Architecture
+# Doom-RLVR System Architecture
 
 ## Overview
 
-Kiro-RLVR is a sophisticated autonomous agent system that enhances Claude Code with intelligent task routing, performance evaluation, and continuous improvement capabilities.
+Doom-RLVR is a sophisticated autonomous agent system that enhances Claude Code with intelligent task routing, performance evaluation, and continuous improvement capabilities.
 
 ## System Flow Diagram
 
@@ -21,7 +21,7 @@ flowchart TB
 
     subgraph "Processing Layer"
         TD[Task Detector]
-        KT[Kiro Template<br/>Generator]
+        KT[Doom Template<br/>Generator]
         PO[Prompt Optimizer]
         AS[Agent Selector]
         TC[Tool Validator]
@@ -117,9 +117,9 @@ sequenceDiagram
     User->>Claude Code: Natural language prompt
     Claude Code->>UserPromptSubmit: Intercept prompt
     UserPromptSubmit->>UserPromptSubmit: Detect task type
-    UserPromptSubmit->>UserPromptSubmit: Generate Kiro template
+    UserPromptSubmit->>UserPromptSubmit: Generate Doom template
     UserPromptSubmit->>UserPromptSubmit: Select agent from .md
-    UserPromptSubmit->>Claude Code: Kiro-structured prompt
+    UserPromptSubmit->>Claude Code: Doom-structured prompt
     
     Claude Code->>Claude Code: Process with agent context
     
@@ -179,7 +179,7 @@ graph LR
         CC[Code Complexity<br/>10%]
         CI[CI/CD Status<br/>10%]
         RR[Review Readiness<br/>10%]
-        KT[Kiro Template<br/>15%]
+        KT[Doom Template<br/>15%]
     end
 
     subgraph "Reward Calculation"
@@ -306,9 +306,9 @@ stateDiagram-v2
     Evaluation --> [*]
 ```
 
-## Kiro Template Structure
+## Doom Template Structure
 
-The Kiro Prompt Template ensures consistent task structuring:
+The Doom Prompt Template ensures consistent task structuring:
 
 ```mermaid
 graph TD
@@ -479,13 +479,13 @@ graph TD
 ### Health Checks
 ```bash
 # System status
-/kiro-status
+/doom-status
 
 # Performance metrics
-/kiro-leaderboard
+/doom-leaderboard
 
 # Detailed report
-/kiro-report
+/doom-report
 
 # Sprint management
 /start-sprint "Sprint Name" 14
@@ -509,4 +509,4 @@ graph TD
 
 ---
 
-This architecture ensures Kiro-RLVR provides intelligent, autonomous assistance while maintaining simplicity, security, and extensibility.
+This architecture ensures Doom-RLVR provides intelligent, autonomous assistance while maintaining simplicity, security, and extensibility.

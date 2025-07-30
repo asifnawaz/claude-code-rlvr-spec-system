@@ -1,4 +1,4 @@
-# Kiro-RLVR Troubleshooting Guide
+# Doom-RLVR Troubleshooting Guide
 
 ## Common Issues and Solutions
 
@@ -9,7 +9,7 @@
 - No task type detection occurs
 
 **Solutions:**
-- Check if hooks are running: Look for `[Kiro-RLVR Agent Assignment]` in output
+- Check if hooks are running: Look for `[Doom-RLVR Agent Assignment]` in output
 - Verify agents exist: `ls .claude/agents/agent-*.yml`
 - Add more keywords to your prompt (e.g., "fix", "add", "implement")
 - Check hook permissions: `chmod +x .claude/hooks/*`
@@ -17,7 +17,7 @@
 ### 2. Commands not found
 
 **Symptoms:**
-- `/kiro-status: command not found`
+- `/doom-status: command not found`
 - Commands don't work
 
 **Solutions:**

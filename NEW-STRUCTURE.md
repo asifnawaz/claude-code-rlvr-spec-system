@@ -1,13 +1,13 @@
-# Kiro-RLVR New Directory Structure
+# Doom-RLVR New Directory Structure
 
 ## Overview
 
-We've reorganized the Kiro-RLVR project to keep the `.claude` directory minimal and Claude Code-specific. All other components have been moved to more logical locations.
+We've reorganized the Doom-RLVR project to keep the `.claude` directory minimal and Claude Code-specific. All other components have been moved to more logical locations.
 
 ## New Structure
 
 ```
-kiro-spec-claude/
+doom-spec-claude/
 ├── .claude/                    # ONLY Claude Code essentials
 │   ├── hooks/                  # Core hooks (required by Claude Code)
 │   │   ├── UserPromptSubmit    # Main hook (no extension)
@@ -15,32 +15,32 @@ kiro-spec-claude/
 │   │   ├── PostToolUse         # Main hook (no extension)
 │   │   ├── Stop                # Main hook (no extension)
 │   │   ├── pre-check.py        # Security validation
-│   │   ├── validate-prompt-structure.py  # Kiro template validator
-│   │   └── kiro_paths.py       # Path configuration helper
+│   │   ├── validate-prompt-structure.py  # Doom template validator
+│   │   └── doom_paths.py       # Path configuration helper
 │   ├── commands/               # Claude slash commands
-│   │   ├── kiro-status.md
-│   │   ├── kiro-leaderboard.md
+│   │   ├── doom-status.md
+│   │   ├── doom-leaderboard.md
 │   │   ├── start-sprint.md
 │   │   └── ...
 │   ├── scripts/                # Compatibility wrappers only
 │   │   ├── rlvr_evaluate.py    # Import wrapper
-│   │   ├── kiro_cli.py         # Import wrapper
+│   │   ├── doom_cli.py         # Import wrapper
 │   │   └── ...
 │   ├── settings.json           # Claude settings
 │   ├── settings.local.json     # Local overrides
 │   └── CLAUDE.md               # Claude context
 │
-├── kiro/                       # Main Kiro-RLVR implementation
+├── doom/                       # Main Doom-RLVR implementation
 │   ├── agents/                 # Agent configurations (.md files)
 │   │   ├── agent-bugfix-junior.md
 │   │   ├── agent-bugfix-senior.md
 │   │   └── ...
 │   ├── scripts/                # Main implementation scripts
-│   │   ├── kiro-cli.py
-│   │   ├── kiro-cli-simple.py
+│   │   ├── doom-cli.py
+│   │   ├── doom-cli-simple.py
 │   │   ├── rlvr-evaluate.py
 │   │   └── ...
-│   ├── config/                 # Kiro configurations
+│   ├── config/                 # Doom configurations
 │   │   ├── paths.json          # Path mappings
 │   │   └── evaluator-config.json
 │   └── prompts/                # Prompt templates
@@ -69,9 +69,9 @@ kiro-spec-claude/
 - Only contains files that Claude Code directly requires
 - Hooks remain with their specific naming requirements
 - Commands stay here as they're Claude-specific
-- Added `kiro_paths.py` for centralized path management
+- Added `doom_paths.py` for centralized path management
 
-### 2. New `kiro/` Directory
+### 2. New `doom/` Directory
 - Contains all the main implementation
 - Agents moved here as `.md` files
 - Scripts use kebab-case naming
@@ -89,21 +89,21 @@ kiro-spec-claude/
 ## Migration Notes
 
 ### For Users
-When setting up Kiro-RLVR in a new project:
+When setting up Doom-RLVR in a new project:
 ```bash
 # Copy only the .claude directory
-cp -r /path/to/kiro-spec-claude/.claude /your/project/
+cp -r /path/to/doom-spec-claude/.claude /your/project/
 
-# Copy the kiro implementation
-cp -r /path/to/kiro-spec-claude/kiro /your/project/
+# Copy the doom implementation
+cp -r /path/to/doom-spec-claude/doom /your/project/
 
 # Data directories will be created automatically
 ```
 
 ### Path Configuration
 All paths are centrally managed through:
-- `/kiro/config/paths.json` - Path mappings
-- `/.claude/hooks/kiro_paths.py` - Path helper module
+- `/doom/config/paths.json` - Path mappings
+- `/.claude/hooks/doom_paths.py` - Path helper module
 
 ### Compatibility
 - Import wrappers in `.claude/scripts/` maintain backward compatibility
@@ -122,7 +122,7 @@ All paths are centrally managed through:
 To verify everything works:
 ```bash
 # Test a command
-/kiro-status
+/doom-status
 
 # Test agent selection (create a test task)
 echo "Fix the login bug" > test-prompt.txt

@@ -7,7 +7,7 @@
 - **Fix**: Created simple YAML parser without external dependencies
 - **Files affected**: 
   - `UserPromptSubmit` hook - now uses custom YAML parser
-  - Created `kiro-cli-simple.py` without Rich library
+  - Created `doom-cli-simple.py` without Rich library
 
 ### 2. ✅ Removed Incorrect Sub-Agent Launcher
 - **Problem**: `launch_subagent.py` tried to use non-existent `claude-code --mode subagent`
@@ -15,7 +15,7 @@
 
 ### 3. ✅ Simplified CLI Tools
 - **Problem**: Complex CLI with external dependencies
-- **Fix**: Created `kiro-cli-simple.py` with basic Python only
+- **Fix**: Created `doom-cli-simple.py` with basic Python only
 
 ### 4. ⚠️ Environment Variable Limitations
 - **Problem**: Hooks tried to set environment variables for other hooks
@@ -76,10 +76,10 @@ EOF
 
 # Run Claude Code - automatically routes to best agent
 # Check status
-/kiro-status
+/doom-status
 
 # View leaderboard  
-/kiro-leaderboard
+/doom-leaderboard
 ```
 
 ## What's Not Possible

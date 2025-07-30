@@ -1,18 +1,18 @@
 openapi: 3.0.3
 info:
-  title: Kiro-RLVR Context Engineering Platform API
+  title: Doom-RLVR Context Engineering Platform API
   description: |
-    API specification for the Kiro-RLVR multi-agent orchestration platform with 
+    API specification for the Doom-RLVR multi-agent orchestration platform with 
     reinforcement learning and variable rewards for Claude Code.
   version: 1.0.0
   contact:
-    name: Kiro-RLVR Team
-    email: team@kiro-rlvr.dev
+    name: Doom-RLVR Team
+    email: team@doom-rlvr.dev
 
 servers:
   - url: http://localhost:8080/api/v1
     description: Local development server
-  - url: https://api.kiro-rlvr.dev/v1
+  - url: https://api.doom-rlvr.dev/v1
     description: Production server
 
 security:
