@@ -40,6 +40,17 @@ def detect_task_type(prompt):
     """Automatically detect task type from user prompt"""
     prompt_lower = prompt.lower()
     
+    # First check if this is a question or informational request
+    question_indicators = ['what is', 'what are', 'how does', 'how do', 'why is', 'why does', 
+                          'where is', 'where are', 'who is', 'explain', 'describe', 'tell me',
+                          'can you explain', 'help me understand', '?']
+    
+    is_question = any(indicator in prompt_lower for indicator in question_indicators)
+    
+    # If it's clearly a question, return None to skip agent routing
+    if is_question and not any(action in prompt_lower for action in ['fix', 'implement', 'create', 'add']):
+        return None
+    
     # Keywords for each task type
     task_indicators = {
         'bugfix': ['fix', 'bug', 'error', 'issue', 'broken', 'crash', 'fail', 'debug', 'repair'],
@@ -57,10 +68,10 @@ def detect_task_type(prompt):
         if score > 0:
             scores[task_type] = score
     
-    # Return highest scoring type, default to 'feature'
+    # Return highest scoring type, or None if no clear task
     if scores:
         return max(scores, key=scores.get)
-    return 'feature'
+    return None
 
 def detect_priority(prompt):
     """Detect task priority from prompt"""
@@ -298,6 +309,29 @@ def select_best_agent(task_type, priority, agents):
 
 # Detect task type and priority
 task_type = detect_task_type(original_prompt)
+
+# If not a task (just a question), skip agent routing
+if task_type is None:
+    # Add CLAUDE.md context reminder
+    claude_md_reminder = ""
+    claude_md_path = Path(project_dir) / '.claude' / 'CLAUDE.md'
+    if claude_md_path.exists():
+        claude_md_reminder = """
+[DOOM-RLVR Project Context]
+• This project uses autonomous agent routing based on task type detection
+• Agents are evaluated using RLVR metrics (test coverage, lint, security, complexity)
+• Commands: /doom-status, /doom-leaderboard, /doom-agent, /doom-report
+• Tasks are automatically structured using the Doom template format
+• All hooks and evaluation are handled automatically - just describe what you need
+• Important: Refer to .claude/CLAUDE.md for full system documentation
+"""
+    
+    response = {
+        "userPrompt": claude_md_reminder + "\n" + original_prompt if claude_md_reminder else original_prompt
+    }
+    print(json.dumps(response))
+    sys.exit(0)
+
 priority = detect_priority(original_prompt)
 
 # Load and select agent
@@ -415,7 +449,7 @@ log_file.parent.mkdir(parents=True, exist_ok=True)
 with open(log_file, 'a') as f:
     f.write(json.dumps(log_entry) + '\n')
 
-# Return the enhanced prompt
+# Return the enhanced prompt with agent context
 response = {
     "userPrompt": agent_context + "\n\n" + original_prompt
 }

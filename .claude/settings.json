@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/user-prompt-submit.py"
+            "command": "python3 .claude/hooks/user-prompt-submit.py"
           }
         ]
       }
@@ -17,11 +17,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-tool-use.py"
+            "command": "python3 .claude/hooks/pre-tool-use.py"
           },
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-check.py"
+            "command": "python3 .claude/hooks/pre-check.py"
           }
         ]
       }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/post-tool-use.py",
+            "command": "python3 .claude/hooks/post-tool-use.py",
             "timeout": 5
           }
         ]
@@ -44,7 +44,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/stop.py",
+            "command": "python3 .claude/hooks/stop.py",
             "timeout": 30
           }
         ]

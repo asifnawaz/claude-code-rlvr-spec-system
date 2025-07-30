@@ -1,0 +1,9 @@
+{
+  "agents_dir": ".claude/agents",
+  "scripts_dir": ".claude/scripts",
+  "config_dir": ".claude/config",
+  "prompts_dir": ".claude/prompts",
+  "tasks_dir": "data/tasks",
+  "scoreboard_dir": "data/scoreboard",
+  "feedback_dir": "data/feedback"
+}

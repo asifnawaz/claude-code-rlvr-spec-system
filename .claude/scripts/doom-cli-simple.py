@@ -10,9 +10,10 @@ from pathlib import Path
 from datetime import datetime
 
 CLAUDE_DIR = Path(__file__).parent.parent
+PROJECT_DIR = CLAUDE_DIR.parent
 AGENTS_DIR = CLAUDE_DIR / "agents"
-SCOREBOARD_DIR = CLAUDE_DIR / "scoreboard"
-TASKS_DIR = CLAUDE_DIR / "tasks"
+SCOREBOARD_DIR = PROJECT_DIR / "data" / "scoreboard"
+TASKS_DIR = PROJECT_DIR / "data" / "tasks"
 
 def parse_simple_yaml(file_path):
     """Parse simple YAML without external dependencies"""
@@ -82,12 +83,15 @@ def cmd_agents():
 def cmd_leaderboard():
     """Show leaderboard"""
     leaderboard_file = SCOREBOARD_DIR / "leaderboard.json"
-    if leaderboard_file.exists():
-        with open(leaderboard_file) as f:
-            data = json.load(f)
-        print("Agent Leaderboard:")
-        for i, agent in enumerate(data.get('agents', [])[:10]):
-            print(f"  {i+1}. {agent['name']} - Reward: {agent.get('rolling_avg_reward', 0):.2f}")
+    if leaderboard_file.exists() and leaderboard_file.stat().st_size > 0:
+        try:
+            with open(leaderboard_file) as f:
+                data = json.load(f)
+            print("Agent Leaderboard:")
+            for i, agent in enumerate(data.get('agents', [])[:10]):
+                print(f"  {i+1}. {agent['name']} - Reward: {agent.get('rolling_avg_reward', 0):.2f}")
+        except json.JSONDecodeError:
+            print("No leaderboard data available")
     else:
         print("No leaderboard data available")
 

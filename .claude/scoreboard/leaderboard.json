@@ -1,1 +1,1 @@
-{"updated_at": "2025-07-30T15:00:08.583226", "agents": [{"name": "agent-bugfix-senior", "tier": "senior", "rolling_avg_reward": 3.8, "total_tasks": 25}, {"name": "agent-feature-senior", "tier": "senior", "rolling_avg_reward": 4.1, "total_tasks": 18}]}
+{"updated_at": "2025-07-30T15:32:37.368128", "agents": [{"name": "agent-bugfix-senior", "tier": "senior", "rolling_avg_reward": 3.8, "total_tasks": 25}, {"name": "agent-feature-senior", "tier": "senior", "rolling_avg_reward": 4.1, "total_tasks": 18}]}
