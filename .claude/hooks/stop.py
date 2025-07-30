@@ -20,7 +20,7 @@ project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
 
 # Import path configuration
 sys.path.insert(0, str(Path(__file__).parent))
-from kiro_paths import get_paths, get_scripts_dir, get_scoreboard_dir, get_tasks_dir, get_feedback_dir
+from doom_paths import get_paths, get_scripts_dir, get_scoreboard_dir, get_tasks_dir, get_feedback_dir
 
 # Get configured paths
 paths = get_paths()
@@ -29,9 +29,14 @@ SCOREBOARD_DIR = get_scoreboard_dir()
 TASKS_DIR = get_tasks_dir()
 FEEDBACK_DIR = get_feedback_dir()
 
-# Import the evaluator from compatibility wrapper
+# Import the evaluator directly from kebab-case file
 sys.path.insert(0, str(paths['claude_dir'] / "scripts"))
-from rlvr_evaluate import RLVREvaluator
+import importlib.util
+spec = importlib.util.spec_from_file_location("rlvr_evaluate", 
+                                              paths['claude_dir'] / "scripts" / "rlvr-evaluate.py")
+rlvr_evaluate = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(rlvr_evaluate)
+RLVREvaluator = rlvr_evaluate.RLVREvaluator
 
 # Find the most recent task
 def get_current_task():

@@ -23,9 +23,9 @@ session_id = hook_data.get('sessionId', '')
 project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
 
 # Get current agent context
-agent_name = os.environ.get('KIRO_AGENT_NAME', '')
-agent_tier = os.environ.get('KIRO_AGENT_TIER', '')
-task_id = os.environ.get('KIRO_TASK_ID', '')
+agent_name = os.environ.get('DOOM_AGENT_NAME', '')
+agent_tier = os.environ.get('DOOM_AGENT_TIER', '')
+task_id = os.environ.get('DOOM_TASK_ID', '')
 
 # Load agent constraints if available
 agent_file = Path(project_dir) / '.claude' / 'agents' / f'{agent_name}.yml'

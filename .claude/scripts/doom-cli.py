@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kiro CLI - Command-line interface for Kiro-RLVR system
+Doom CLI - Command-line interface for Doom-RLVR system
 """
 
 import typer
@@ -12,7 +12,7 @@ from rich.console import Console
 from rich.table import Table
 from rich import print as rprint
 
-app = typer.Typer(help="Kiro-RLVR CLI for Claude Code agent management")
+app = typer.Typer(help="Doom-RLVR CLI for Claude Code agent management")
 console = Console()
 
 CLAUDE_DIR = Path(__file__).parent.parent
@@ -341,9 +341,9 @@ def update_tiers(
 
 @app.command()
 def init():
-    """Initialize Kiro-RLVR directories and files"""
+    """Initialize Doom-RLVR directories and files"""
     
-    console.print("[bold]Initializing Kiro-RLVR...[/bold]\n")
+    console.print("[bold]Initializing Doom-RLVR...[/bold]\n")
     
     # Create directories
     directories = [
@@ -397,11 +397,11 @@ def init():
             filepath.touch()
             console.print(f"[green]✓[/green] Created {filename}")
     
-    console.print("\n[bold green]Kiro-RLVR initialized successfully![/bold green]")
+    console.print("\n[bold green]Doom-RLVR initialized successfully![/bold green]")
     console.print("\nNext steps:")
     console.print("1. Create task.yml and run a command to test")
-    console.print("2. Check agent status with: kiro agents")
-    console.print("3. View task status with: kiro status")
+    console.print("2. Check agent status with: doom agents")
+    console.print("3. View task status with: doom status")
 
 if __name__ == "__main__":
     app()

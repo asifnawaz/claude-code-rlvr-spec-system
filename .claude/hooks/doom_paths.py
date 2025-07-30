@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Centralized path configuration for Kiro-RLVR system.
+Centralized path configuration for Doom-RLVR system.
 This module provides consistent paths across all hooks and scripts.
 """
 
@@ -13,24 +13,24 @@ def get_project_root():
     return Path(os.environ.get('CLAUDE_PROJECT_DIR', '.')).resolve()
 
 def get_paths():
-    """Get all Kiro-RLVR paths"""
+    """Get all Doom-RLVR paths"""
     project_root = get_project_root()
     
     # Try to load paths from config
-    config_file = project_root / "kiro" / "config" / "paths.json"
+    config_file = project_root / ".claude" / "config" / "paths.json"
     if config_file.exists():
         with open(config_file) as f:
             paths_config = json.load(f)
     else:
         # Fallback to default paths
         paths_config = {
-            "agents_dir": "kiro/agents",
-            "scripts_dir": "kiro/scripts",
-            "config_dir": "kiro/config",
-            "prompts_dir": "kiro/prompts",
-            "tasks_dir": "data/tasks",
-            "scoreboard_dir": "data/scoreboard",
-            "feedback_dir": "data/feedback"
+            "agents_dir": ".claude/agents",
+            "scripts_dir": ".claude/scripts",
+            "config_dir": ".claude/config",
+            "prompts_dir": ".claude/prompts",
+            "tasks_dir": ".claude/tasks",
+            "scoreboard_dir": ".claude/scoreboard",
+            "feedback_dir": ".claude/feedback"
         }
     
     # Convert to absolute paths

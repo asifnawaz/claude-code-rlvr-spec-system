@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simplified Kiro CLI without external dependencies
+Simplified Doom CLI without external dependencies
 """
 
 import os
@@ -79,7 +79,7 @@ def cmd_leaderboard():
 def main():
     """Main CLI entry point"""
     if len(sys.argv) < 2:
-        print("Usage: kiro-cli-simple.py [status|agents|leaderboard] [args...]")
+        print("Usage: doom-cli-simple.py [status|agents|leaderboard] [args...]")
         sys.exit(1)
     
     command = sys.argv[1]

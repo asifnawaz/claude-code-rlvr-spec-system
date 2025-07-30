@@ -22,8 +22,8 @@ Ending the current sprint and calculating RLVR performance metrics.
 ### Overall Sprint Score
 !`tail -100 "${CLAUDE_PROJECT_DIR}/data/scoreboard/rlvr.jsonl" 2>/dev/null | jq -s 'map(.reward) | add/length' | xargs printf "Average reward: %.2f\n" || echo "No rewards recorded"`
 
-### Kiro Template Compliance
-!`tail -50 "${CLAUDE_PROJECT_DIR}/data/scoreboard/rlvr.jsonl" 2>/dev/null | jq -s 'map(.components.kiro_template_score // 0) | add/length' | xargs printf "Average Kiro score: %.2f\n" || echo "No Kiro scores"`
+### Doom Template Compliance
+!`tail -50 "${CLAUDE_PROJECT_DIR}/data/scoreboard/rlvr.jsonl" 2>/dev/null | jq -s 'map(.components.doom_template_score // 0) | add/length' | xargs printf "Average Doom score: %.2f\n" || echo "No Doom scores"`
 
 ## Archive Sprint
 

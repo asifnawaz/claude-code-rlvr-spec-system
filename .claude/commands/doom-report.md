@@ -6,7 +6,7 @@ allowed-tools: Read, Bash(find:*, jq:*, wc:*)
 
 ## Context
 
-Generate a comprehensive report of Kiro-RLVR task activities.
+Generate a comprehensive report of Doom-RLVR task activities.
 
 ## Task
 

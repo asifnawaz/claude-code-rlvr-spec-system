@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Kiro Prompt Template Validator
-Ensures prompts follow the structured Kiro format
+Doom Prompt Template Validator
+Ensures prompts follow the structured Doom format
 """
 
 import re
 from typing import Dict, List, Tuple
 
-class KiroPromptValidator:
-    """Validates and scores Kiro prompt structure compliance"""
+class DoomPromptValidator:
+    """Validates and scores Doom prompt structure compliance"""
     
     REQUIRED_FIELDS = [
         '$GOAL',
@@ -27,7 +27,7 @@ class KiroPromptValidator:
     
     def validate(self, prompt: str) -> Tuple[bool, Dict[str, any]]:
         """
-        Validate a prompt against Kiro template
+        Validate a prompt against Doom template
         Returns: (is_valid, results_dict)
         """
         self.validation_results = {
@@ -91,17 +91,17 @@ class KiroPromptValidator:
         
         # Add feedback based on score
         if self.score >= 9:
-            self.validation_results['feedback'].append("Excellent Kiro prompt compliance!")
+            self.validation_results['feedback'].append("Excellent Doom prompt compliance!")
         elif self.score >= 7:
             self.validation_results['feedback'].append("Good prompt structure, minor improvements possible")
         elif self.score >= 5:
-            self.validation_results['feedback'].append("Prompt needs improvement to meet Kiro standards")
+            self.validation_results['feedback'].append("Prompt needs improvement to meet Doom standards")
         else:
-            self.validation_results['feedback'].append("Poor prompt structure - please follow Kiro template")
+            self.validation_results['feedback'].append("Poor prompt structure - please follow Doom template")
     
     def format_template(self) -> str:
-        """Return the Kiro prompt template"""
-        return """# Kiro Prompt Template
+        """Return the Doom prompt template"""
+        return """# Doom Prompt Template
 $GOAL: <single objective sentence>
 $CONTEXT: <brief background>
 $INPUT: <relevant artifacts / code refs>
@@ -111,11 +111,11 @@ $ACCEPTANCE_CRITERIA: <checklist>
 $DEADLINE: <ISO 8601>"""
 
     def enhance_prompt(self, original_prompt: str) -> str:
-        """Enhance a non-compliant prompt with Kiro structure"""
+        """Enhance a non-compliant prompt with Doom structure"""
         if self.validation_results['is_valid']:
             return original_prompt
         
-        enhanced = "# Kiro Prompt\n"
+        enhanced = "# Doom Prompt\n"
         
         # Try to extract information from original prompt
         lines = original_prompt.strip().split('\n')
@@ -142,8 +142,8 @@ def main():
     
     if len(sys.argv) < 2:
         print("Usage: validate-prompt-structure.py <prompt_file>")
-        print("\nKiro Prompt Template:")
-        validator = KiroPromptValidator()
+        print("\nDoom Prompt Template:")
+        validator = DoomPromptValidator()
         print(validator.format_template())
         sys.exit(1)
     
@@ -152,7 +152,7 @@ def main():
         prompt = f.read()
     
     # Validate
-    validator = KiroPromptValidator()
+    validator = DoomPromptValidator()
     is_valid, results = validator.validate(prompt)
     
     # Output results

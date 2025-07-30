@@ -1,10 +1,10 @@
-# Kiro-RLVR Context for Claude Code
+# Doom-RLVR Context for Claude Code
 
 ## System Overview
 
-Kiro-RLVR is an autonomous agent handling system that automatically:
+Doom-RLVR is an autonomous agent handling system that automatically:
 - Detects task types from natural language prompts
-- Structures prompts using the Kiro template ($GOAL, $CONTEXT, etc.)
+- Structures prompts using the Doom template ($GOAL, $CONTEXT, etc.)
 - Routes tasks to specialized agents (defined as .md files)
 - Validates tool usage with security checks (pre-check.py)
 - Evaluates performance using RLVR including template compliance
@@ -26,10 +26,10 @@ Just type your request naturally. The system handles everything else:
 ## Available Commands
 
 ### Task Management
-- `/kiro-status` - View recent tasks and their status
-- `/kiro-leaderboard` - See agent performance rankings with RLVR scores
-- `/kiro-agent <name>` - View specific agent details from .md files
-- `/kiro-report` - Generate comprehensive task report
+- `/doom-status` - View recent tasks and their status
+- `/doom-leaderboard` - See agent performance rankings with RLVR scores
+- `/doom-agent <name>` - View specific agent details from .md files
+- `/doom-report` - Generate comprehensive task report
 
 ### Sprint Management (NEW)
 - `/start-sprint "Name" [days]` - Start a new sprint with RLVR tracking
@@ -60,7 +60,7 @@ Current specialized agents (defined as .md files with YAML front-matter):
 
 Each agent has:
 - YAML configuration in front-matter (tier, specializations, tools_allowed)
-- Markdown body with instructions and Kiro template guidance
+- Markdown body with instructions and Doom template guidance
 
 ## Priority Levels
 
@@ -79,9 +79,9 @@ Tasks are evaluated on:
 4. **Complexity** (10%): Should not increase significantly
 5. **CI/CD** (10%): All pipelines must pass
 6. **Review Quality** (10%): Clean, reviewable code
-7. **Kiro Template Compliance** (15%): Proper use of $GOAL, $CONTEXT, etc.
+7. **Doom Template Compliance** (15%): Proper use of $GOAL, $CONTEXT, etc.
 
-The Kiro template score includes:
+The Doom template score includes:
 - Presence of all required fields (-2 points per missing)
 - Completion of acceptance criteria (+1 per checked item)
 - Overall structure and clarity
@@ -125,7 +125,7 @@ Check logs if needed:
 1. **Be Specific**: Clear descriptions help task detection
 2. **Trust the System**: Let it optimize and route automatically
 3. **Review Feedback**: Check evaluation results for insights
-4. **Monitor Performance**: Use `/kiro-leaderboard` periodically
+4. **Monitor Performance**: Use `/doom-leaderboard` periodically
 
 ## Quick Examples
 
