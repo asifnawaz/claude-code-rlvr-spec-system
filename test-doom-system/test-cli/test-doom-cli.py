@@ -43,7 +43,8 @@ class DoomCLITester:
             
             # Check if output contains expected sections
             output = result.stdout
-            if "Recent Tasks" in output or "No recent tasks" in output:
+            output_lower = output.lower()
+            if "recent tasks" in output_lower or "no recent tasks" in output_lower:
                 print("   - Task list displayed correctly")
                 return True
             else:
