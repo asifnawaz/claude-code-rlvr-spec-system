@@ -8,13 +8,15 @@ An intelligent context engineering platform that automatically detects task type
 
 ## 🌟 What is Kiro-RLVR?
 
-Kiro-RLVR transforms Claude Code into an autonomous development assistant. Simply describe what you need in natural language, and the system:
+Kiro-RLVR transforms Claude Code into an autonomous development assistant with structured task management. Simply describe what you need in natural language, and the system:
 
 - **Detects** the type of task (bugfix, feature, refactor, etc.)
-- **Optimizes** your prompt for better results
-- **Selects** the best specialized agent
-- **Evaluates** the quality of work
-- **Improves** continuously through feedback
+- **Structures** your request using the Kiro Prompt Template
+- **Selects** the best specialized agent from markdown-configured profiles
+- **Validates** tool usage for security and compliance
+- **Evaluates** work quality with RLVR metrics including template compliance
+- **Tracks** sprint progress and team velocity
+- **Improves** continuously through reinforcement learning
 
 ![Kiro-RLVR Demo](https://github.com/your-org/kiro-spec-claude/assets/demo.gif)
 
@@ -26,6 +28,10 @@ Kiro-RLVR transforms Claude Code into an autonomous development assistant. Simpl
 # Clone the repository
 git clone https://github.com/asifnawaz/claude-code-rlvr-spec-system
 mv claude-code-rlvr-spec-system/.claude ./
+
+# For your own projects, copy the necessary directories:
+cp -r .claude /your/project/
+cp -r kiro /your/project/
 
 # That's it! The system is ready to use
 ```
@@ -54,9 +60,10 @@ The system automatically:
 ## 📚 Documentation
 
 - **[SETUP-GUIDE.md](SETUP-GUIDE.md)** - Complete installation and configuration guide
+- **[PRD-COMPLIANCE.md](PRD-COMPLIANCE.md)** - How we implement the PRD requirements
 - **[AUTONOMOUS-SYSTEM.md](AUTONOMOUS-SYSTEM.md)** - How the autonomous system works
 - **[prd.md](prd.md)** - Product requirements and design philosophy
-- **[CLAUDE-CODE-FIXES.md](CLAUDE-CODE-FIXES.md)** - Implementation notes and constraints
+- **[IMPLEMENTATION-NOTES.md](.claude/IMPLEMENTATION-NOTES.md)** - Technical implementation details
 
 ### Specification Documents
 
@@ -74,16 +81,19 @@ The system automatically:
 - **Smart Detection**: Automatically categorizes tasks
 - **Prompt Enhancement**: Adds context you might forget
 
-### Specialized Agents
+### Specialized Agents (Markdown-based)
 - **Bugfix Specialists**: Junior and Senior levels
 - **Feature Developers**: Junior and Senior levels
 - **Refactoring Expert**: Principal level architect
 - **Security Specialist**: Senior level security expert
 
+Agents are defined as `.md` files with YAML front-matter configuration.
+
 ### Continuous Improvement
-- **RLVR Evaluation**: Multi-metric quality assessment
-- **Performance Tracking**: Agent performance over time
-- **Automatic Optimization**: System learns from usage
+- **RLVR Evaluation**: Multi-metric quality assessment including Kiro template compliance
+- **Sprint Management**: Track velocity and burndown with `/start-sprint`, `/end-sprint`
+- **Performance Tracking**: Agent tier promotion/demotion based on rewards
+- **Security Validation**: Pre-tool checks for compliance
 - **Feedback Loop**: Specific improvement suggestions
 
 ### Claude Code Integration
@@ -100,26 +110,42 @@ The system automatically:
 "Add user authentication with JWT tokens"
 # Kiro-RLVR automatically:
 # - Detects: feature task
-# - Selects: agent-feature-senior
-# - Optimizes: adds feature checklist
+# - Generates Kiro template with $GOAL, $CONTEXT, etc.
+# - Selects: agent-feature-senior from .md profiles
+# - Validates: security checks on tool usage
 # - Executes: with proper constraints
+# - Scores: including template compliance (15% weight)
 ```
 
-### Check Status
+### Commands
 ```bash
+# Task Management
 /kiro-status      # View recent tasks
-/kiro-leaderboard # See agent performance
-/kiro-agent agent-bugfix-senior  # Agent details
+/kiro-leaderboard # See agent performance with RLVR scores
+/kiro-agent agent-bugfix-senior  # Agent details from .md file
+/kiro-report      # Generate comprehensive task report
+
+# Sprint Management (NEW)
+/start-sprint "Sprint 42" 14  # Start 14-day sprint
+/burndown         # View sprint progress and velocity
+/end-sprint       # Complete sprint with metrics
 ```
 
-### Manual Control (Optional)
-```yaml
-# task.yml for specific requirements
-type: security
-priority: P0
-agent_name: agent-security-senior
-description: Fix SQL injection in search
+### Kiro Prompt Template
+
+All tasks are automatically structured using the Kiro template:
+
 ```
+$GOAL: <single objective sentence>
+$CONTEXT: <brief background>
+$INPUT: <relevant artifacts / code refs>
+$CONSTRAINTS: <edge cases, security limits>
+$OUTPUT_EXPECTED: <deliverable definition>
+$ACCEPTANCE_CRITERIA: <checklist>
+$DEADLINE: <ISO 8601>
+```
+
+The RLVR evaluator rewards template compliance and tracks acceptance criteria completion.
 
 ## 🏗️ Architecture
 

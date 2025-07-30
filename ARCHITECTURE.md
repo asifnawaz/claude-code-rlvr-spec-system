@@ -21,18 +21,20 @@ flowchart TB
 
     subgraph "Processing Layer"
         TD[Task Detector]
+        KT[Kiro Template<br/>Generator]
         PO[Prompt Optimizer]
         AS[Agent Selector]
         TC[Tool Validator]
+        PC[Pre-Check<br/>Security]
     end
 
-    subgraph "Agent Pool"
-        A1[agent-bugfix-junior]
-        A2[agent-bugfix-senior]
-        A3[agent-feature-junior]
-        A4[agent-feature-senior]
-        A5[agent-refactor-principal]
-        A6[agent-security-senior]
+    subgraph "Agent Pool (.md files)"
+        A1[agent-bugfix-junior.md]
+        A2[agent-bugfix-senior.md]
+        A3[agent-feature-junior.md]
+        A4[agent-feature-senior.md]
+        A5[agent-refactor-principal.md]
+        A6[agent-security-senior.md]
     end
 
     subgraph "Evaluation Layer"
@@ -43,8 +45,9 @@ flowchart TB
 
     subgraph "Storage Layer"
         TS[(Tasks<br/>Metadata)]
-        SB[(Scoreboard<br/>Metrics)]
+        SB[(Scoreboard<br/>RLVR Metrics)]
         FD[(Feedback<br/>History)]
+        SP[(Sprint<br/>Data)]
     end
 
     subgraph "Claude Code Core"
@@ -54,7 +57,8 @@ flowchart TB
     %% User Flow
     U --> H1
     H1 --> TD
-    TD --> PO
+    TD --> KT
+    KT --> PO
     PO --> AS
     AS --> |Select Best Agent| A1
     AS --> A2
@@ -74,7 +78,9 @@ flowchart TB
     %% Tool Validation
     CC --> H2
     H2 --> TC
+    H2 --> PC
     TC --> |Approve/Deny| CC
+    PC --> |Security Check| CC
     CC --> H3
     H3 --> |Track Usage| SB
 
@@ -111,23 +117,25 @@ sequenceDiagram
     User->>Claude Code: Natural language prompt
     Claude Code->>UserPromptSubmit: Intercept prompt
     UserPromptSubmit->>UserPromptSubmit: Detect task type
-    UserPromptSubmit->>UserPromptSubmit: Optimize prompt
-    UserPromptSubmit->>UserPromptSubmit: Select agent
-    UserPromptSubmit->>Claude Code: Enhanced prompt
+    UserPromptSubmit->>UserPromptSubmit: Generate Kiro template
+    UserPromptSubmit->>UserPromptSubmit: Select agent from .md
+    UserPromptSubmit->>Claude Code: Kiro-structured prompt
     
     Claude Code->>Claude Code: Process with agent context
     
     Claude Code->>PreToolUse: Before tool use
     PreToolUse->>PreToolUse: Validate permissions
+    PreToolUse->>PreToolUse: Security checks (pre-check.py)
     PreToolUse->>Claude Code: Allow/Deny
     
     Claude Code->>PostToolUse: After tool use
     PostToolUse->>PostToolUse: Track usage
     
     Claude Code->>Stop: Task complete
-    Stop->>Stop: Evaluate performance
+    Stop->>Stop: Evaluate RLVR + template compliance
+    Stop->>Stop: Update sprint metrics
     Stop->>Stop: Generate feedback
-    Stop->>User: Show results
+    Stop->>User: Show results with scores
 ```
 
 ### 2. Task Detection & Routing
@@ -165,12 +173,13 @@ graph TD
 ```mermaid
 graph LR
     subgraph "Evaluation Components"
-        TC[Test Coverage<br/>30%]
-        CQ[Code Quality<br/>20%]
-        SS[Security Scan<br/>20%]
+        TC[Test Coverage<br/>25%]
+        CQ[Code Quality<br/>15%]
+        SS[Security Scan<br/>15%]
         CC[Code Complexity<br/>10%]
         CI[CI/CD Status<br/>10%]
         RR[Review Readiness<br/>10%]
+        KT[Kiro Template<br/>15%]
     end
 
     subgraph "Reward Calculation"
@@ -180,7 +189,8 @@ graph LR
         CC --> RC
         CI --> RC
         RR --> RC
-        RC --> FR[Final Reward<br/>0.0 - 1.0]
+        KT --> RC
+        RC --> FR[Final Reward<br/>0.0 - 5.0]
     end
 
     subgraph "Agent Update"
@@ -296,6 +306,64 @@ stateDiagram-v2
     Evaluation --> [*]
 ```
 
+## Kiro Template Structure
+
+The Kiro Prompt Template ensures consistent task structuring:
+
+```mermaid
+graph TD
+    subgraph "Template Fields"
+        G[$GOAL<br/>Single Objective]
+        C[$CONTEXT<br/>Background Info]
+        I[$INPUT<br/>Artifacts/Code]
+        CN[$CONSTRAINTS<br/>Limits/Security]
+        O[$OUTPUT_EXPECTED<br/>Deliverables]
+        A[$ACCEPTANCE_CRITERIA<br/>Checklist]
+        D[$DEADLINE<br/>ISO 8601]
+    end
+    
+    subgraph "Template Processing"
+        TP[Template Parser] --> TV[Template Validator]
+        TV --> TS[Template Scorer]
+        TS --> |15% weight| RLVR[RLVR Evaluation]
+    end
+    
+    G --> TP
+    C --> TP
+    I --> TP
+    CN --> TP
+    O --> TP
+    A --> TP
+    D --> TP
+```
+
+## Sprint Management System
+
+```mermaid
+stateDiagram-v2
+    [*] --> SprintPlanning
+    
+    SprintPlanning --> SprintActive: /start-sprint
+    
+    state SprintActive {
+        [*] --> TaskExecution
+        TaskExecution --> VelocityTracking
+        VelocityTracking --> BurndownUpdate
+        BurndownUpdate --> TaskExecution
+    }
+    
+    SprintActive --> SprintReview: /end-sprint
+    
+    state SprintReview {
+        [*] --> MetricsCalculation
+        MetricsCalculation --> VelocityReport
+        VelocityReport --> CompletionAnalysis
+        CompletionAnalysis --> [*]
+    }
+    
+    SprintReview --> [*]
+```
+
 ## Key Design Principles
 
 ### 1. **Zero Configuration**
@@ -347,8 +415,16 @@ stateDiagram-v2
 graph TD
     subgraph "Security Layers"
         A[Input Validation] --> B[Tool Permission Check]
-        B --> C[Sandboxed Execution]
+        B --> PC[Pre-Check Security<br/>Validation]
+        PC --> C[Sandboxed Execution]
         C --> D[Output Sanitization]
+    end
+    
+    subgraph "Validation Points"
+        PC1[Agent Permissions<br/>Check]
+        PC2[Tool Usage<br/>Patterns]
+        PC3[Path Security<br/>Validation]
+        PC4[Command<br/>Whitelisting]
     end
     
     subgraph "Constraints"
@@ -357,6 +433,11 @@ graph TD
         G[Limited File Access]
         H[Python Stdlib Only]
     end
+    
+    PC --> PC1
+    PC --> PC2
+    PC --> PC3
+    PC --> PC4
     
     B --> E
     B --> F
@@ -372,7 +453,7 @@ graph TD
 3. Add specialized agent if needed
 
 ### Custom Evaluation Metrics
-1. Modify `rlvr_evaluate.py`
+1. Modify `rlvr-evaluate.py`
 2. Add new component to reward calculation
 3. Update feedback generation
 
@@ -405,6 +486,11 @@ graph TD
 
 # Detailed report
 /kiro-report
+
+# Sprint management
+/start-sprint "Sprint Name" 14
+/burndown
+/end-sprint
 ```
 
 ## Future Enhancements

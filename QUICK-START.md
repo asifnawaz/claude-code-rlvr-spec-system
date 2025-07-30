@@ -33,11 +33,12 @@ When you type a request, Kiro-RLVR automatically:
 
 1. **Analyzes** your request
 2. **Detects** the task type (bug, feature, etc.)
-3. **Optimizes** your prompt with helpful context
-4. **Selects** the best specialized agent
-5. **Executes** with quality constraints
-6. **Evaluates** the results
-7. **Provides** improvement feedback
+3. **Generates** Kiro template with $GOAL, $CONTEXT, etc.
+4. **Selects** the best agent from .md profiles
+5. **Validates** tool usage for security
+6. **Executes** with quality constraints
+7. **Evaluates** results including template compliance
+8. **Provides** improvement feedback
 
 ## 📊 Monitor Progress
 
@@ -47,6 +48,12 @@ When you type a request, Kiro-RLVR automatically:
 
 # View agent performance
 /kiro-leaderboard
+
+# Start a sprint
+/start-sprint "Sprint 1" 14
+
+# Check sprint progress
+/burndown
 ```
 
 ## 💡 Examples
@@ -55,16 +62,20 @@ When you type a request, Kiro-RLVR automatically:
 ```
 Input: "Users can't upload profile pictures larger than 2MB"
 → Detected: Bugfix task
-→ Selected: agent-bugfix-senior
-→ Added: Bug analysis template
+→ Generated: Kiro template with $GOAL, $CONTEXT, etc.
+→ Selected: agent-bugfix-senior (from .md profile)
+→ Validated: Tool usage checked by pre-check.py
+→ Score: Template compliance adds 15% to RLVR
 ```
 
 ### New Feature
 ```
 Input: "Add two-factor authentication"
 → Detected: Feature + Security task
-→ Selected: agent-security-senior
-→ Added: Security implementation checklist
+→ Generated: Kiro template with security constraints
+→ Selected: agent-security-senior (specialized in auth)
+→ Added: $ACCEPTANCE_CRITERIA with security checklist
+→ Tracked: Sprint velocity and burndown
 ```
 
 ### Performance
@@ -93,7 +104,7 @@ Input: "The search is too slow"
 
 ### "No agent selected"
 - The `.claude` directory might not be in the right place
-- Check: `ls .claude/agents/` should show agent files
+- Check: `ls .claude/agents/` should show .md files (not .yml)
 
 ### "Command not found"
 - Make sure you're using Claude Code

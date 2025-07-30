@@ -10,7 +10,7 @@
 2. **Initialize the system**
    ```bash
    cd /your/project
-   python .claude/scripts/kiro_cli.py init
+   python .claude/scripts/kiro-cli.py init
    ```
 
 3. **Create a task file**
@@ -38,22 +38,22 @@
 
 ```bash
 # View agent status
-python .claude/scripts/kiro_cli.py agents
+python .claude/scripts/kiro-cli.py agents
 
 # Check task status
-python .claude/scripts/kiro_cli.py status
+python .claude/scripts/kiro-cli.py status
 
 # View leaderboard
-python .claude/scripts/kiro_cli.py leaderboard
+python .claude/scripts/kiro-cli.py leaderboard
 
 # Check agent scores
-python .claude/scripts/kiro_cli.py scores agent-bugfix-senior
+python .claude/scripts/kiro-cli.py scores agent-bugfix-senior
 
 # Follow live logs
-python .claude/scripts/kiro_cli.py logs --tail
+python .claude/scripts/kiro-cli.py logs --tail
 
 # Manually update tiers
-python .claude/scripts/kiro_cli.py update-tiers
+python .claude/scripts/kiro-cli.py update-tiers
 ```
 
 ## Configuration
@@ -95,10 +95,10 @@ Edit `.claude/config/settings.json`:
 ### Real-time Dashboard
 ```bash
 # In one terminal
-python .claude/scripts/kiro_cli.py logs --tail
+python .claude/scripts/kiro-cli.py logs --tail
 
 # In another terminal
-watch -n 5 'python .claude/scripts/kiro_cli.py leaderboard'
+watch -n 5 'python .claude/scripts/kiro-cli.py leaderboard'
 ```
 
 ### Performance Analysis
@@ -212,6 +212,6 @@ jobs:
 # .git/hooks/pre-commit
 #!/bin/bash
 # Run tier update before each commit
-python .claude/scripts/tier_updater.py
+python .claude/scripts/tier-updater.py
 git add .claude/agents/*.yml .claude/scoreboard/leaderboard.json
 ```

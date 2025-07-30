@@ -30,10 +30,14 @@ echo "Setting hook permissions..."
 chmod +x "$CLAUDE_DIR/hooks"/*
 echo "✓ Hooks are executable"
 
-# Make command scripts executable
-echo "Setting command permissions..."
-chmod +x "$CLAUDE_DIR/commands"/*.sh
-echo "✓ Commands are executable"
+# Check command files
+echo "Checking command files..."
+if ls "$CLAUDE_DIR/commands"/*.md >/dev/null 2>&1; then
+    COMMAND_COUNT=$(ls "$CLAUDE_DIR/commands"/*.md 2>/dev/null | wc -l)
+    echo "✓ Command files found: $COMMAND_COUNT"
+else
+    echo "✗ No command files found"
+fi
 
 # Initialize scoreboard files if they don't exist
 echo "Initializing scoreboard..."

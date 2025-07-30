@@ -2,7 +2,12 @@
   "hooks": {
     "UserPromptSubmit": [
       {
-        "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/UserPromptSubmit"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/UserPromptSubmit"
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -12,6 +17,10 @@
           {
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/PreToolUse"
+          },
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-check.py"
           }
         ]
       }
@@ -30,49 +39,18 @@
     ],
     "Stop": [
       {
-        "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/Stop",
-        "timeout": 30
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/Stop",
+            "timeout": 30
+          }
+        ]
       }
     ]
   },
-  "commands": {
-    "assign-task": {
-      "description": "Manually assign task to specific agent",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/assign-task.sh"
-    },
-    "kiro-status": {
-      "description": "Check Kiro-RLVR task and agent status",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-status.sh"
-    },
-    "kiro-leaderboard": {
-      "description": "View agent performance leaderboard",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-leaderboard.sh"
-    },
-    "kiro-evaluate": {
-      "description": "Manually trigger task evaluation",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-evaluate.sh"
-    },
-    "kiro-agent": {
-      "description": "View specific agent details",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-agent.sh"
-    },
-    "kiro-expand": {
-      "description": "Expand a task into subtasks",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-expand.sh"
-    },
-    "kiro-report": {
-      "description": "Generate task report",
-      "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/commands/kiro-report.sh"
-    }
-  },
-  "environment": {
+  "env": {
     "KIRO_ENABLED": "true",
     "KIRO_VERSION": "1.0.0"
-  },
-  "agent_settings": {
-    "auto_routing": true,
-    "default_tier": "junior",
-    "evaluation_enabled": true,
-    "tier_updates_enabled": true
   }
 }

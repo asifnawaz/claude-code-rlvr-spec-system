@@ -17,14 +17,20 @@ except:
     hook_data = {}
 
 project_dir = os.environ.get('CLAUDE_PROJECT_DIR', '.')
-CLAUDE_DIR = Path(project_dir) / ".claude"
-SCRIPTS_DIR = CLAUDE_DIR / "scripts"
-SCOREBOARD_DIR = CLAUDE_DIR / "scoreboard"
-TASKS_DIR = CLAUDE_DIR / "tasks"
-FEEDBACK_DIR = CLAUDE_DIR / "feedback"
 
-# Import the evaluator
-sys.path.insert(0, str(SCRIPTS_DIR))
+# Import path configuration
+sys.path.insert(0, str(Path(__file__).parent))
+from kiro_paths import get_paths, get_scripts_dir, get_scoreboard_dir, get_tasks_dir, get_feedback_dir
+
+# Get configured paths
+paths = get_paths()
+SCRIPTS_DIR = get_scripts_dir()
+SCOREBOARD_DIR = get_scoreboard_dir()
+TASKS_DIR = get_tasks_dir()
+FEEDBACK_DIR = get_feedback_dir()
+
+# Import the evaluator from compatibility wrapper
+sys.path.insert(0, str(paths['claude_dir'] / "scripts"))
 from rlvr_evaluate import RLVREvaluator
 
 # Find the most recent task
@@ -146,7 +152,7 @@ def generate_feedback(evaluation, task_metadata):
 
 def update_agent_performance(agent_name, reward):
     """Update agent's rolling performance metrics"""
-    agent_file = CLAUDE_DIR / "agents" / f"{agent_name}.yml"
+    agent_file = paths['agents_dir'] / f"{agent_name}.yml"
     if not agent_file.exists():
         return
     

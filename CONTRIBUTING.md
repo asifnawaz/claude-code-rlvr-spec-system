@@ -105,7 +105,7 @@ Before submitting:
 echo '{"userPrompt":"fix the login bug"}' | python3 .claude/hooks/UserPromptSubmit
 
 # Test evaluation
-python3 .claude/scripts/rlvr_evaluate.py test-task agent-test completed
+python3 .claude/scripts/rlvr-evaluate.py test-task agent-test completed
 
 # Test commands
 /kiro-status

@@ -9,9 +9,12 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-CLAUDE_DIR = Path(__file__).parent.parent
-SCOREBOARD_DIR = CLAUDE_DIR / "scoreboard"
-TASKS_DIR = CLAUDE_DIR / "tasks"
+# Import path configuration
+sys.path.insert(0, str(Path(__file__).parent))
+from kiro_paths import get_scoreboard_dir, get_tasks_dir
+
+SCOREBOARD_DIR = get_scoreboard_dir()
+TASKS_DIR = get_tasks_dir()
 
 # Policy configuration
 FORBIDDEN_COMMANDS = [
