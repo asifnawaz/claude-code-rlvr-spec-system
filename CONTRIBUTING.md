@@ -17,7 +17,7 @@ Thank you for your interest in contributing to Doom-RLVR! This document provides
 
 ### Suggesting Features
 
-1. Open a discussion in the [Discussions](https://github.com/your-org/kiro-spec-claude/discussions) tab
+1. Open a discussion in the [Discussions](https://github.com/asifnawaz/claude-code-rlvr-spec-system/discussions) tab
 2. Describe the use case
 3. Explain how it benefits users
 4. Consider implementation complexity
