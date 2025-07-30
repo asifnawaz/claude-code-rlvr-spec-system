@@ -18,13 +18,28 @@ def parse_simple_yaml(file_path):
     """Parse simple YAML without external dependencies"""
     data = {}
     with open(file_path, 'r') as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            if ':' in line:
-                key, value = line.split(':', 1)
-                data[key.strip()] = value.strip()
+        content = f.read()
+        # Handle .md files with frontmatter
+        if content.startswith('---'):
+            yaml_end = content.find('---', 3)
+            if yaml_end > 0:
+                yaml_content = content[3:yaml_end]
+                for line in yaml_content.split('\n'):
+                    line = line.strip()
+                    if not line or line.startswith('#'):
+                        continue
+                    if ':' in line and not line.startswith(' '):
+                        key, value = line.split(':', 1)
+                        data[key.strip()] = value.strip()
+        else:
+            # Handle regular yaml files
+            for line in content.split('\n'):
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if ':' in line:
+                    key, value = line.split(':', 1)
+                    data[key.strip()] = value.strip()
     return data
 
 def cmd_status(task_id=None):
@@ -57,7 +72,7 @@ def cmd_status(task_id=None):
 def cmd_agents():
     """List agents"""
     print("Available agents:")
-    for agent_file in sorted(AGENTS_DIR.glob("agent-*.yml")):
+    for agent_file in sorted(AGENTS_DIR.glob("agent-*.md")):
         try:
             data = parse_simple_yaml(agent_file)
             print(f"  {agent_file.stem} - {data.get('tier', 'unknown')} tier")
